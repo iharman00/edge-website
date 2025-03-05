@@ -282,6 +282,13 @@ export interface Page {
           id?: string | null;
         }[]
       | null;
+    stats?:
+      | {
+          metric: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
     media?: (string | null) | Media;
   };
   layout: ContentBlock[];
@@ -659,6 +666,13 @@ export interface PagesSelect<T extends boolean = true> {
                     label?: T;
                     appearance?: T;
                   };
+              id?: T;
+            };
+        stats?:
+          | T
+          | {
+              metric?: T;
+              description?: T;
               id?: T;
             };
         media?: T;

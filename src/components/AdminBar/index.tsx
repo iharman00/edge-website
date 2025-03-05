@@ -11,6 +11,7 @@ import { useRouter } from 'next/navigation'
 import './index.scss'
 
 import { getClientSideURL } from '@/utilities/getURL'
+import ResponsiveContainer from '../ui/ResponsiveContainer'
 
 const baseClass = 'admin-bar'
 
@@ -53,7 +54,7 @@ export const AdminBar: React.FC<{
         hidden: !show,
       })}
     >
-      <div className="container">
+      <ResponsiveContainer>
         <PayloadAdminBar
           {...adminBarProps}
           className="py-2 text-white"
@@ -83,7 +84,7 @@ export const AdminBar: React.FC<{
             zIndex: 'unset',
           }}
         />
-      </div>
+      </ResponsiveContainer>
     </div>
   )
 }

@@ -3,13 +3,16 @@ import type { Page } from '@/payload-types'
 import { CMSLink } from '@/components/Link'
 import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
+import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText, stats }) => {
   return (
-    <div className="relative">
-      <div className="container mb-20">
-        <div className="max-w-[36.5rem]">
+    <div className="overflow-clip">
+      <ResponsiveContainer>
+        <div className="max-w-[30rem] xl:max-w-[36.5rem] mb-20">
+          {/* Content */}
           {richText && <RichText className="mb-8" data={richText} enableGutter={false} />}
+          {/* CTA */}
           {Array.isArray(links) && links.length > 0 && (
             <ul className="flex justify-start gap-4">
               {links.map(({ link }, i) => {
@@ -22,40 +25,44 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText 
             </ul>
           )}
         </div>
-      </div>
 
-      {/* Stats */}
-      <div className="container relative">
-        {/* Accent background extending left but not past the container */}
-        <div className="absolute -z-1 top-0 left-[-50vw] w-[calc(40rem+50vw+3rem)] h-full bg-accent rounded-tr-[5rem]"></div>
-
-        {/* Stats Content */}
-        <div className="max-w-[40rem] pt-16 pb-14 flex gap-20">
-          <div>
-            <p className="text-xl font-bold mb-2">145+</p>
-            <p>Members</p>
-          </div>
-          <div>
-            <p className="text-xl font-bold mb-2">145+</p>
-            <p>Donations Received</p>
-          </div>
-          <div>
-            <p className="text-xl font-bold mb-2">145+</p>
-            <p>Events in the last year</p>
-          </div>
-        </div>
-      </div>
-
-      {/* Hero Image */}
-      <div className="absolute -z-1 -top-56 right-0 bg-accent text-accent-foreground min-w-3/12 h-[36rem]">
+        {/* Mobile Hero Image */}
         {media && typeof media === 'object' && (
+          <div className="block lg:hidden relative w-full mb-20">
+            <Media
+              className="max-w-[20rem] aspect-[3/4] mx-auto object-fit border-2 border-border rounded-md overflow-clip"
+              priority
+              resource={media}
+            />
+            <div className="absolute -z-1 -left-[10vw] top-[calc((20rem*1.33)/2-6rem)] block lg:hidden bg-accent w-[999px] h-[12rem]"></div>
+          </div>
+        )}
+
+        {/* Stats */}
+        {stats && (
+          <div className="relative lg:w-max pt-16 mr-4 lg:mr-0 pb-14 pr-14 flex flex-wrap gap-20">
+            {stats.map((stat) => (
+              <div key={stat.id}>
+                <p className="text-2xl font-bold mb-2">{stat.metric}</p>
+                <p>{stat.description}</p>
+              </div>
+            ))}
+            {/* Solid background */}
+            <div className="absolute -z-1 top-0 right-0 w-[9999px] h-full bg-accent rounded-tr-[5rem]" />
+          </div>
+        )}
+      </ResponsiveContainer>
+
+      {/* Desktop Hero Image */}
+      {media && typeof media === 'object' && (
+        <div className="hidden lg:block absolute -z-1 top-0 right-0 bg-accent min-w-3/12 h-[36rem]">
           <Media
             className="absolute -bottom-[8rem] -left-[12rem] max-w-[24rem] aspect-[3/4] object-fit border-2 border-border rounded-md overflow-clip"
             priority
             resource={media}
           />
-        )}
-      </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -55,10 +55,34 @@ export const hero: Field = {
       },
     }),
     {
+      name: 'stats',
+      type: 'array',
+      fields: [
+        {
+          name: 'metric',
+          required: true,
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'text',
+          required: true,
+        },
+      ],
+      required: true,
+      minRows: 1,
+      maxRows: 3,
+      admin: {
+        // This field only shows up in payload CMS in highImpact heroes
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+      },
+    },
+    {
       name: 'media',
       type: 'upload',
+      // This field only shows up in payload CMS in highImpact heroes
       admin: {
-        condition: (_, { type } = {}) => ['highImpact', 'lowImpact'].includes(type),
+        condition: (_, { type } = {}) => ['highImpact'].includes(type),
       },
       relationTo: 'media',
       required: true,
