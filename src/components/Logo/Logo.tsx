@@ -1,14 +1,12 @@
-import clsx from 'clsx'
 import React from 'react'
 
-interface Props {
-  className?: string
+interface LogoProps extends React.HtmlHTMLAttributes<HTMLImageElement> {
   loading?: 'lazy' | 'eager'
   priority?: 'auto' | 'high' | 'low'
 }
 
-export const Logo = (props: Props) => {
-  const { loading: loadingFromProps, priority: priorityFromProps, className } = props
+export const Logo = (props: LogoProps) => {
+  const { loading: loadingFromProps, priority: priorityFromProps } = props
 
   const loading = loadingFromProps || 'lazy'
   const priority = priorityFromProps || 'low'
@@ -23,6 +21,7 @@ export const Logo = (props: Props) => {
       fetchPriority={priority}
       decoding="async"
       src="Logo-and-wordmark.svg"
+      {...props}
     />
   )
 }

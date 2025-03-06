@@ -2,6 +2,7 @@ import type { GlobalConfig } from 'payload'
 
 import { link } from '@/fields/link'
 import { revalidateHeader } from './hooks/revalidateHeader'
+import { linkGroup } from '@/fields/linkGroup'
 
 export const Header: GlobalConfig = {
   slug: 'header',
@@ -9,6 +10,15 @@ export const Header: GlobalConfig = {
     read: () => true,
   },
   fields: [
+    linkGroup({
+      appearances: ['secondary'],
+      overrides: {
+        name: 'primaryLink',
+        minRows: 1,
+        maxRows: 1,
+        required: true,
+      },
+    }),
     {
       name: 'navItems',
       type: 'array',
