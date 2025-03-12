@@ -57,7 +57,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
       {media && typeof media === 'object' && (
         <div className="hidden lg:block absolute -z-1 top-0 right-0 bg-accent min-w-3/12 h-[36rem]">
           <Media
-            className="absolute -bottom-[8rem] -left-[12rem] max-w-[24rem] aspect-[3/4] object-fit border-2 border-border rounded-md overflow-clip"
+            className="absolute -bottom-[8rem] -left-[12rem] max-w-[24rem] border-2 border-border rounded-md overflow-clip"
             priority
             resource={media}
           />

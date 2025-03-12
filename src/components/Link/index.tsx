@@ -8,7 +8,7 @@ import type { Page } from '@/payload-types'
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
   children?: React.ReactNode
-  className?: string
+  className?: React.HTMLAttributes<HTMLButtonElement>['className']
   label?: string | null
   newTab?: boolean | null
   reference?: {
@@ -18,6 +18,7 @@ type CMSLinkType = {
   size?: ButtonProps['size'] | null
   type?: 'custom' | 'reference' | null
   url?: string | null
+  onClick?: React.HTMLAttributes<HTMLButtonElement>['onClick']
 }
 
 export const CMSLink: React.FC<CMSLinkType> = (props) => {
@@ -31,6 +32,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     reference,
     size: sizeFromProps,
     url,
+    onClick,
   } = props
 
   const href =
@@ -56,7 +58,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
   }
 
   return (
-    <Button asChild className={className} size={size} variant={appearance}>
+    <Button asChild className={className} size={size} variant={appearance} onClick={onClick}>
       <Link href={href || url || ''} {...newTabProps}>
         {label && label}
         {children && children}

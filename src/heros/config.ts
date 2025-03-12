@@ -28,6 +28,10 @@ export const hero: Field = {
           value: 'highImpact',
         },
         {
+          label: 'Medium Impact',
+          value: 'mediumImpact',
+        },
+        {
           label: 'Low Impact',
           value: 'lowImpact',
         },
@@ -52,6 +56,9 @@ export const hero: Field = {
     linkGroup({
       overrides: {
         maxRows: 1,
+        admin: {
+          condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        },
       },
     }),
     {
@@ -69,20 +76,16 @@ export const hero: Field = {
           required: true,
         },
       ],
-      required: true,
-      minRows: 1,
       maxRows: 3,
       admin: {
-        // This field only shows up in payload CMS in highImpact heroes
         condition: (_, { type } = {}) => ['highImpact'].includes(type),
       },
     },
     {
       name: 'media',
       type: 'upload',
-      // This field only shows up in payload CMS in highImpact heroes
       admin: {
-        condition: (_, { type } = {}) => ['highImpact'].includes(type),
+        condition: (_, { type } = {}) => ['highImpact', 'mediumImpact'].includes(type),
       },
       relationTo: 'media',
       required: true,

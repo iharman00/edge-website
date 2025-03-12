@@ -10,7 +10,7 @@ const nextConfig = {
   // Your Next.js config here
   images: {
     remotePatterns: [
-      ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
+      ...[NEXT_PUBLIC_SERVER_URL, 'https://1hxq5xnw-3000.use.devtunnels.ms'].map((item) => {
         const url = new URL(item)
 
         return {

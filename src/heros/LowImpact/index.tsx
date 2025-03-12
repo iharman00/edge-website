@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 
 import type { Page } from '@/payload-types'
 
 import RichText from '@/components/RichText'
+import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 
 type LowImpactHeroType =
   | {
@@ -16,10 +17,15 @@ type LowImpactHeroType =
 
 export const LowImpactHero: React.FC<LowImpactHeroType> = ({ children, richText }) => {
   return (
-    <div className="container mt-16">
-      <div className="max-w-[48rem]">
-        {children || (richText && <RichText data={richText} enableGutter={false} />)}
-      </div>
+    <div className="bg-background text-foreground pt-8 pb-32">
+      <ResponsiveContainer>
+        <div className="md:ml-[2rem] lg:ml-[12rem] max-w-[40rem]">
+          {children ||
+            (richText && (
+              <RichText data={richText} enableGutter={false} className="[&>*:first-child]:mb-8" />
+            ))}
+        </div>
+      </ResponsiveContainer>
     </div>
   )
 }

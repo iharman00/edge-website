@@ -14,7 +14,7 @@ export async function Footer() {
   const navItems = footerData?.navItems || []
 
   return (
-    <footer className="border-t-2 border-foreground pt-20 pb-28">
+    <footer className="border-t-2 border-foreground mt-24 pt-20 pb-28">
       <ResponsiveContainer className="flex items-start gap-16 ">
         <Link className="flex items-center" href="/">
           <Logo className="w-[20rem]" />
