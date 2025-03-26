@@ -9,9 +9,11 @@ import type { Header } from '@/payload-types'
 import { Logo } from '@/components/Logo/Logo'
 import { HeaderNav } from './Nav'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
-import { CMSLink } from '@/components/Link'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { cn } from '@/utilities/ui'
+import { Button, buttonVariants } from '@/components/ui/button'
+import { useAuth } from '@/providers/Auth'
+import LogoutButton from '@/components/LogoutButton'
 
 interface HeaderClientProps {
   data: Header
@@ -22,7 +24,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
-
+  const { user, logout } = useAuth()
   useEffect(() => {
     setHeaderTheme(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -33,8 +35,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
-  const primaryLink = data?.primaryLink || []
-
   return (
     <header
       className={cn('text-foreground relative pb-16', theme === 'dark' ? `bg-background dark` : '')}
@@ -44,13 +44,16 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
           <Link href="/">
             <Logo loading="eager" priority="high" />
           </Link>
-          <HeaderNav data={data} theme={theme} />
-          <CMSLink
-            key={primaryLink[0]?.id}
-            {...primaryLink[0]?.link}
-            {...(theme === 'dark' && { appearance: 'outline' })}
-            className="hidden lg:flex"
-          />
+          <HeaderNav data={data} />
+          <div className="hidden lg:block">
+            {user ? (
+              <LogoutButton />
+            ) : (
+              <Link href="/login" className={cn(buttonVariants(), 'hidden lg:flex')}>
+                Log In
+              </Link>
+            )}
+          </div>
         </div>
       </ResponsiveContainer>
     </header>

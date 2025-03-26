@@ -5,13 +5,14 @@ import type { PayloadAdminBarProps, PayloadMeUser } from 'payload-admin-bar'
 import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from 'payload-admin-bar'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import './index.scss'
 
 import { getClientSideURL } from '@/utilities/getURL'
 import ResponsiveContainer from '../ui/ResponsiveContainer'
+import { useAuth } from '@/providers/Auth'
 
 const baseClass = 'admin-bar'
 
@@ -35,6 +36,7 @@ const Title: React.FC = () => <span>Dashboard</span>
 export const AdminBar: React.FC<{
   adminBarProps?: PayloadAdminBarProps
 }> = (props) => {
+  const { user } = useAuth()
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
   const [show, setShow] = useState(false)
@@ -43,9 +45,9 @@ export const AdminBar: React.FC<{
   ) as keyof typeof collectionLabels
   const router = useRouter()
 
-  const onAuthChange = React.useCallback((user: PayloadMeUser) => {
-    setShow(Boolean(user?.id))
-  }, [])
+  useEffect(() => {
+    setShow(true ? user?.role === 'admin' : false)
+  }, [user])
 
   return (
     <div
@@ -70,7 +72,6 @@ export const AdminBar: React.FC<{
             singular: collectionLabels[collection]?.singular || 'Page',
           }}
           logo={<Title />}
-          onAuthChange={onAuthChange}
           onPreviewExit={() => {
             fetch('/next/exit-preview').then(() => {
               router.push('/')

@@ -136,6 +136,7 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  role?: ('admin' | 'member') | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -246,6 +247,7 @@ export interface Media {
 export interface Page {
   id: string;
   title: string;
+  isProtected: boolean;
   hero: {
     type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
     richText?: {
@@ -539,6 +541,7 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  role?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -648,6 +651,7 @@ export interface MediaSelect<T extends boolean = true> {
  */
 export interface PagesSelect<T extends boolean = true> {
   title?: T;
+  isProtected?: T;
   hero?:
     | T
     | {

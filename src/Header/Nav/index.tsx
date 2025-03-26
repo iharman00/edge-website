@@ -1,10 +1,11 @@
+'use client'
+
 import React from 'react'
 
 import type { Header as HeaderType } from '@/payload-types'
 
 import {
   Sheet,
-  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -13,24 +14,29 @@ import {
 } from '@/components/ui/sheet'
 import { CMSLink } from '@/components/Link'
 import { Menu } from 'lucide-react'
+import { Button, buttonVariants } from '@/components/ui/button'
+import Link from 'next/link'
+import { cn } from '@/utilities/ui'
+import { useAuth } from '@/providers/Auth'
+import LogoutButton from '@/components/LogoutButton'
 
-export const HeaderNav: React.FC<{ data: HeaderType; theme: string | null }> = ({
-  data,
-  theme,
-}) => {
+export const HeaderNav: React.FC<{
+  data: HeaderType
+}> = ({ data }) => {
+  const { user, logout } = useAuth()
   const [open, setOpen] = React.useState(false)
   const navItems = data?.navItems || []
-  const primaryLink = data?.primaryLink || []
   return (
     <nav>
       {/* Mobile Navigation */}
       <div className="flex justify-between gap-4 lg:hidden">
-        <CMSLink
-          key={primaryLink[0]?.id}
-          {...primaryLink[0]?.link}
-          {...(theme === 'dark' && { appearance: 'outline' })}
-          className="lg:hidden"
-        />
+        {user ? (
+          <LogoutButton />
+        ) : (
+          <Link href="/login" className={cn(buttonVariants())}>
+            Log In
+          </Link>
+        )}
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger onClick={() => setOpen(true)}>
             <Menu />
@@ -38,6 +44,10 @@ export const HeaderNav: React.FC<{ data: HeaderType; theme: string | null }> = (
           <SheetContent>
             <SheetHeader className="hidden">
               <SheetTitle>Navigation Menu</SheetTitle>
+              <SheetDescription>
+                This action cannot be undone. This will permanently delete your account and remove
+                your data from our servers.
+              </SheetDescription>
             </SheetHeader>
             <div className="flex flex-col justify-between items-center gap-10 m-auto">
               {navItems.map(({ link }, i) => (

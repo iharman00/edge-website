@@ -1,7 +1,5 @@
 import type { CollectionConfig } from 'payload'
 
-import { authenticated } from '@/access/authenticated'
-import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
 import { slugField } from '@/fields/slug'
 import { populatePublishedAt } from '@/hooks/populatePublishedAt'
 import { generatePreviewPath } from '@/utilities/generatePreviewPath'
@@ -16,14 +14,16 @@ import {
 } from '@payloadcms/plugin-seo/fields'
 import { hero } from '@/heros/config'
 import { Content } from '@/blocks/Content/config'
+import { admins } from '@/access/admins'
+import { adminsOrMembersOnlyOrPublished } from '@/access/adminsOrMembersOnlyOrPublished'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
   access: {
-    create: authenticated,
-    delete: authenticated,
-    read: authenticatedOrPublished,
-    update: authenticated,
+    create: admins,
+    delete: admins,
+    read: adminsOrMembersOnlyOrPublished,
+    update: admins,
   },
   // This config controls what's populated by default when a page is referenced
   // https://payloadcms.com/docs/queries/select#defaultpopulate-collection-config-property
@@ -57,6 +57,13 @@ export const Pages: CollectionConfig<'pages'> = {
     {
       name: 'title',
       type: 'text',
+      required: true,
+    },
+    {
+      name: 'isProtected',
+      label: 'Visible to Members Only',
+      type: 'checkbox',
+      defaultValue: false,
       required: true,
     },
     {
