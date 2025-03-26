@@ -50,7 +50,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       throw new Error(errors?.[0]?.message || 'An error occurred while attempting to login.')
     } catch (e) {
       if (e instanceof Error) {
-        throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+        throw new Error(e.message)
       }
       throw new Error(`${CLOUD_CONNECTION_ERROR}: An Unknown error occured`)
     }
@@ -73,7 +73,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     } catch (e) {
       if (e instanceof Error) {
-        throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+        throw new Error(e.message)
       }
       throw new Error(`${CLOUD_CONNECTION_ERROR}: An Unknown error occured`)
     }
@@ -108,7 +108,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           return
         }
         if (e instanceof Error) {
-          throw new Error(`${CLOUD_CONNECTION_ERROR}: ${e.message}`)
+          throw new Error(e.message)
         }
         throw new Error(`${CLOUD_CONNECTION_ERROR}: An Unknown error occured`)
       }

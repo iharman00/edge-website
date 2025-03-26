@@ -5,6 +5,7 @@ import { useAuth } from '@/providers/Auth'
 import { cn } from '@/utilities/ui'
 import { Slot } from '@radix-ui/react-slot'
 import { Loader2 } from 'lucide-react'
+import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 
 const LogoutButton = ({
@@ -17,6 +18,7 @@ const LogoutButton = ({
 }: ButtonProps) => {
   const [loading, setLoading] = useState(false)
   const { logout } = useAuth()
+  const router = useRouter()
 
   return (
     <Button
@@ -26,6 +28,7 @@ const LogoutButton = ({
         setLoading(true)
         await logout()
         setLoading(false)
+        router.refresh()
       }}
       {...props}
     >
