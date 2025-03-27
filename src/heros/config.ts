@@ -28,10 +28,6 @@ export const hero: Field = {
           value: 'highImpact',
         },
         {
-          label: 'Medium Impact',
-          value: 'mediumImpact',
-        },
-        {
           label: 'Low Impact',
           value: 'lowImpact',
         },

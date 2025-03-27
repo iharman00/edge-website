@@ -136,6 +136,8 @@ export interface UserAuthOperations {
  */
 export interface User {
   id: string;
+  firstName: string;
+  lastName: string;
   role?: ('admin' | 'member') | null;
   updatedAt: string;
   createdAt: string;
@@ -249,7 +251,7 @@ export interface Page {
   title: string;
   isProtected: boolean;
   hero: {
-    type: 'none' | 'highImpact' | 'mediumImpact' | 'lowImpact';
+    type: 'none' | 'highImpact' | 'lowImpact';
     richText?: {
       root: {
         type: string;
@@ -314,26 +316,27 @@ export interface Page {
  * via the `definition` "ContentBlock".
  */
 export interface ContentBlock {
-  columns?:
+  size?: ('sideBySide' | 'sideBySideReversed') | null;
+  media: string | Media;
+  richText?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  enableLink?: boolean | null;
+  links?:
     | {
-        size?: ('oneThird' | 'half' | 'twoThirds' | 'full') | null;
-        richText?: {
-          root: {
-            type: string;
-            children: {
-              type: string;
-              version: number;
-              [k: string]: unknown;
-            }[];
-            direction: ('ltr' | 'rtl') | null;
-            format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
-            indent: number;
-            version: number;
-          };
-          [k: string]: unknown;
-        } | null;
-        enableLink?: boolean | null;
-        link?: {
+        link: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?: {
@@ -541,6 +544,8 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  firstName?: T;
+  lastName?: T;
   role?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -705,12 +710,13 @@ export interface PagesSelect<T extends boolean = true> {
  * via the `definition` "ContentBlock_select".
  */
 export interface ContentBlockSelect<T extends boolean = true> {
-  columns?:
+  size?: T;
+  media?: T;
+  richText?: T;
+  enableLink?: T;
+  links?:
     | T
     | {
-        size?: T;
-        richText?: T;
-        enableLink?: T;
         link?:
           | T
           | {
@@ -811,26 +817,26 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
  */
 export interface Header {
   id: string;
-  primaryLink: {
-    link: {
-      type?: ('reference' | 'custom') | null;
-      newTab?: boolean | null;
-      reference?: {
-        relationTo: 'pages';
-        value: string | Page;
-      } | null;
-      url?: string | null;
-      label: string;
-      /**
-       * Choose how the link should be rendered.
-       */
-      appearance?: 'secondary' | null;
-    };
-    id?: string | null;
-  }[];
   navItems?:
     | {
-        link: {
+        type: 'single' | 'group';
+        label?: string | null;
+        links?:
+          | {
+              link: {
+                type?: ('reference' | 'custom') | null;
+                newTab?: boolean | null;
+                reference?: {
+                  relationTo: 'pages';
+                  value: string | Page;
+                } | null;
+                url?: string | null;
+                label: string;
+              };
+              id?: string | null;
+            }[]
+          | null;
+        link?: {
           type?: ('reference' | 'custom') | null;
           newTab?: boolean | null;
           reference?: {
@@ -839,6 +845,10 @@ export interface Header {
           } | null;
           url?: string | null;
           label: string;
+          /**
+           * Choose how the link should be rendered.
+           */
+          appearance?: ('default' | 'secondary') | null;
         };
         id?: string | null;
       }[]
@@ -875,9 +885,25 @@ export interface Footer {
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
-  primaryLink?:
+  navItems?:
     | T
     | {
+        type?: T;
+        label?: T;
+        links?:
+          | T
+          | {
+              link?:
+                | T
+                | {
+                    type?: T;
+                    newTab?: T;
+                    reference?: T;
+                    url?: T;
+                    label?: T;
+                  };
+              id?: T;
+            };
         link?:
           | T
           | {
@@ -887,20 +913,6 @@ export interface HeaderSelect<T extends boolean = true> {
               url?: T;
               label?: T;
               appearance?: T;
-            };
-        id?: T;
-      };
-  navItems?:
-    | T
-    | {
-        link?:
-          | T
-          | {
-              type?: T;
-              newTab?: T;
-              reference?: T;
-              url?: T;
-              label?: T;
             };
         id?: T;
       };

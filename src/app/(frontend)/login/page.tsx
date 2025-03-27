@@ -1,48 +1,56 @@
 'use client'
 
-import { useRouter, useSearchParams } from 'next/navigation'
-import { useEffect, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { Suspense, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { string, z } from 'zod'
+import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '@/providers/Auth'
 import { toast } from 'sonner'
 import { Loader2 } from 'lucide-react'
-import { AuthenticationError } from 'payload'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import LogoutButton from '@/components/LogoutButton'
+import { useSearchParams } from 'next/navigation'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 
 const formSchema = z.object({
   email: z.string().email().max(150),
   password: z.string().max(150),
 })
 
+function CallbackUrlWrapper({ onCallbackUrl }: { onCallbackUrl: (callbackUrl: string) => void }) {
+  const searchParams = useSearchParams()
+  const callbackUrl = searchParams.get('callbackUrl') || '/'
+  const isValidCallbackUrl = callbackUrl.startsWith('/') && !callbackUrl.startsWith('//')
+
+  useEffect(() => {
+    onCallbackUrl(isValidCallbackUrl ? callbackUrl : '/')
+  }, [callbackUrl, isValidCallbackUrl, onCallbackUrl])
+
+  return null
+}
+
 export default function Page() {
   const { user, login } = useAuth()
   const router = useRouter()
-
-  const searchParams = useSearchParams()
-  const callbackUrl = searchParams.get('callbackUrl') || '/'
   const { setHeaderTheme } = useHeaderTheme()
 
   useEffect(() => {
     setHeaderTheme('light')
   }, [setHeaderTheme])
 
-  // Only allow internal paths and protect against open redirection vulnerabilities
-  const isValidCallbackUrl = callbackUrl.startsWith('/') && !callbackUrl.startsWith('//')
+  const [callbackUrl, setCallbackUrl] = useState('/')
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -54,34 +62,39 @@ export default function Page() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const res = await login({ email: values.email, password: values.password })
+      await login({ email: values.email, password: values.password })
       toast('Logged In successfully.')
-      router.push(isValidCallbackUrl ? callbackUrl : '/')
+      router.push(callbackUrl)
     } catch (e) {
       if (e instanceof Error) {
         form.setError('email', { message: e.message })
         form.setError('password', { message: e.message })
       } else {
-        toast('An unknown error occured, please try again.')
+        toast('An unknown error occurred, please try again.')
       }
     }
   }
 
   return (
-    <ResponsiveContainer className="flex items-start justify-center pb-20">
-      <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
+    <ResponsiveContainer className="flex items-start justify-center mt-16 mb-24 pt-12 pb-26">
+      {/* CallbackUrlWrapper uses useSearchParams() so has to be wrapped with suspense */}
+      {/* Read more here - https://nextjs.org/docs/messages/missing-suspense-with-csr-bailout */}
+      <Suspense fallback={null}>
+        <CallbackUrlWrapper onCallbackUrl={setCallbackUrl} />
+      </Suspense>
+      <Card className="w-full max-w-md">
+        <CardHeader className="text-center">
+          <CardTitle>{user ? 'You are already logged in.' : 'Member Login'}</CardTitle>
+          <CardDescription>
+            {user ? 'Do you want to log out?' : 'Log in to view member only content'}
+          </CardDescription>
+        </CardHeader>
         {user ? (
-          <div className="text-center">
-            <h1 className="text-3xl font-bold mb-2">Log Out?</h1>
-            <p className="mb-8">You are already logged In</p>
+          <CardContent className="mx-auto">
             <LogoutButton variant="default" />
-          </div>
+          </CardContent>
         ) : (
-          <>
-            <div className="text-center mb-10">
-              <h1 className="text-3xl font-bold mb-2">Member Login</h1>
-              <p>Log in to view member only content</p>
-            </div>
+          <CardContent>
             <Form {...form}>
               <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
                 <FormField
@@ -120,15 +133,18 @@ export default function Page() {
                     </FormItem>
                   )}
                 />
-                <Button className="w-full h-10 flex justify-center">
+                <Button
+                  className="w-full h-10 flex justify-center"
+                  disabled={form.formState.isSubmitting}
+                >
                   {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
                   Log In
                 </Button>
               </form>
             </Form>
-          </>
+          </CardContent>
         )}
-      </div>
+      </Card>
     </ResponsiveContainer>
   )
 }

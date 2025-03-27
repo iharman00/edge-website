@@ -11,9 +11,10 @@ import { HeaderNav } from './Nav'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import { cn } from '@/utilities/ui'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { buttonVariants } from '@/components/ui/button'
 import { useAuth } from '@/providers/Auth'
 import LogoutButton from '@/components/LogoutButton'
+import { ArrowRight } from 'lucide-react'
 
 interface HeaderClientProps {
   data: Header
@@ -24,7 +25,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
   const [theme, setTheme] = useState<string | null>(null)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   useEffect(() => {
     setHeaderTheme(null)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -37,10 +38,10 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
   return (
     <header
-      className={cn('text-foreground relative pb-16', theme === 'dark' ? `bg-background dark` : '')}
+      className={cn('text-foreground relative', theme === 'dark' ? `bg-background dark` : '')}
     >
       <ResponsiveContainer>
-        <div className="py-8 flex justify-between items-center">
+        <div className="py-8 flex justify-between items-center gap-4">
           <Link href="/">
             <Logo loading="eager" priority="high" />
           </Link>
@@ -50,7 +51,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               <LogoutButton />
             ) : (
               <Link href="/login" className={cn(buttonVariants(), 'hidden lg:flex')}>
-                Log In
+                Log In <ArrowRight />
               </Link>
             )}
           </div>

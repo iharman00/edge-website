@@ -11,7 +11,12 @@ import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
 import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { redirect } from 'next/navigation'
+import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
+import Link from 'next/link'
+import { cn } from '@/utilities/ui'
+import { buttonVariants } from '@/components/ui/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { ArrowRight } from 'lucide-react'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -19,7 +24,7 @@ export async function generateStaticParams() {
     collection: 'pages',
     draft: false,
     limit: 1000,
-    overrideAccess: false,
+    overrideAccess: true,
     pagination: false,
     select: {
       slug: true,
@@ -63,21 +68,44 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   const { hero, layout } = page
 
-  if ((page.isProtected && auth.user) || !page.isProtected) {
-    return (
-      <article>
-        <PageClient />
-        {/* Allows redirects for valid pages too */}
-        <PayloadRedirects disableNotFound url={url} />
+  // Only shows page if it's not protected or user is logged in
+  return (
+    <article className="mt-16 mb-24">
+      <PageClient />
+      {/* Allows redirects for valid pages too */}
+      <PayloadRedirects disableNotFound url={url} />
 
-        {draft && <LivePreviewListener />}
-        <RenderHero {...hero} />
-        <RenderBlocks blocks={layout} />
-      </article>
-    )
-  } else {
-    return redirect(`/login?callbackUrl=${url}`)
-  }
+      {draft && <LivePreviewListener />}
+
+      {(page.isProtected && auth.user) || !page.isProtected ? (
+        <>
+          <RenderHero {...hero} />
+          <RenderBlocks blocks={layout} />
+        </>
+      ) : (
+        <ResponsiveContainer className="flex items-start justify-center pt-16 pb-24">
+          <Card className="w-full max-w-md text-center">
+            <CardHeader>
+              <CardTitle>Access Restricted</CardTitle>
+              <CardDescription className="sr-only">
+                Access restricted, this page is for members only.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div>
+                <p>
+                  This page is for members only! Please log in to access this exclusive content.
+                </p>
+                <Link href={`/login?callbackUrl=${url}`} className={cn(buttonVariants(), 'mt-6')}>
+                  Log In <ArrowRight />
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+        </ResponsiveContainer>
+      )}
+    </article>
+  )
 }
 
 export async function generateMetadata({ params: paramsPromise }: Args): Promise<Metadata> {

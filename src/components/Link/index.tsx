@@ -1,9 +1,14 @@
+'use client'
+
 import { Button, type ButtonProps } from '@/components/ui/button'
 import { cn } from '@/utilities/ui'
 import Link from 'next/link'
 import React from 'react'
 
 import type { Page } from '@/payload-types'
+import isPage from '@/collections/Pages/type_guards/isPage'
+import { Lock } from 'lucide-react'
+import { useAuth } from '@/providers/Auth'
 
 type CMSLinkType = {
   appearance?: 'inline' | ButtonProps['variant']
@@ -34,7 +39,8 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     url,
     onClick,
   } = props
-
+  const { user } = useAuth()
+  const linkIsProtected = isPage(reference?.value) ? reference.value.isProtected : false
   const href =
     type === 'reference' && typeof reference?.value === 'object' && reference.value.slug
       ? `${reference?.relationTo !== 'pages' ? `/${reference?.relationTo}` : ''}/${
@@ -61,6 +67,7 @@ export const CMSLink: React.FC<CMSLinkType> = (props) => {
     <Button asChild className={className} size={size} variant={appearance} onClick={onClick}>
       <Link href={href || url || ''} {...newTabProps}>
         {label && label}
+        {!user && linkIsProtected && <Lock className="inline-block mr-1" />}
         {children && children}
       </Link>
     </Button>

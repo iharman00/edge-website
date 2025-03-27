@@ -14,15 +14,11 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
           {richText && <RichText className="mb-8" data={richText} enableGutter={false} />}
           {/* CTA */}
           {Array.isArray(links) && links.length > 0 && (
-            <ul className="flex justify-start gap-4">
-              {links.map(({ link }, i) => {
-                return (
-                  <li key={i}>
-                    <CMSLink {...link} />
-                  </li>
-                )
+            <div className="flex justify-start gap-4">
+              {links.map(({ link, id }) => {
+                return <CMSLink key={id} {...link} />
               })}
-            </ul>
+            </div>
           )}
         </div>
 

@@ -1,4 +1,3 @@
-import { User } from '@/payload-types'
 import type { CollectionConfig } from 'payload'
 
 export const Users: CollectionConfig = {
@@ -21,6 +20,18 @@ export const Users: CollectionConfig = {
   auth: true,
   fields: [
     // _id, email, salt, hash, timestamps, loginAttempts, __v added by default
+    {
+      name: 'firstName',
+      type: 'text',
+      required: true,
+      maxLength: 64,
+    },
+    {
+      name: 'lastName',
+      type: 'text',
+      required: true,
+      maxLength: 64,
+    },
     {
       name: 'role',
       type: 'select',

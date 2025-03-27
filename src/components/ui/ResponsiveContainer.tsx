@@ -3,11 +3,7 @@ import { HTMLAttributes } from 'react'
 
 interface ResponsiveContainerProps extends HTMLAttributes<HTMLDivElement> {}
 
-export default function ResponsiveContainer({
-  children,
-  className,
-  ...props
-}: ResponsiveContainerProps) {
+export default function ResponsiveContainer({ className, ...props }: ResponsiveContainerProps) {
   return (
     <div
       className={cn(
@@ -15,8 +11,6 @@ export default function ResponsiveContainer({
         className,
       )}
       {...props}
-    >
-      {children}
-    </div>
+    />
   )
 }

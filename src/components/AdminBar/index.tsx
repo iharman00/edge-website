@@ -1,11 +1,11 @@
 'use client'
 
-import type { PayloadAdminBarProps, PayloadMeUser } from 'payload-admin-bar'
+import type { PayloadAdminBarProps } from 'payload-admin-bar'
 
 import { cn } from '@/utilities/ui'
 import { useSelectedLayoutSegments } from 'next/navigation'
 import { PayloadAdminBar } from 'payload-admin-bar'
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useRouter } from 'next/navigation'
 
 import './index.scss'
@@ -39,23 +39,18 @@ export const AdminBar: React.FC<{
   const { user } = useAuth()
   const { adminBarProps } = props || {}
   const segments = useSelectedLayoutSegments()
-  const [show, setShow] = useState(false)
+  const showAdminBar = true ? user?.role === 'admin' : false
   const collection = (
     collectionLabels[segments?.[1] as keyof typeof collectionLabels] ? segments[1] : 'pages'
   ) as keyof typeof collectionLabels
   const router = useRouter()
 
-  useEffect(() => {
-    setShow(true ? user?.role === 'admin' : false)
-  }, [user])
+  if (!showAdminBar) {
+    return null
+  }
 
   return (
-    <div
-      className={cn(baseClass, 'py-2 bg-black text-white', {
-        block: show,
-        hidden: !show,
-      })}
-    >
+    <div className={cn(baseClass, 'py-2 bg-black text-white')}>
       <ResponsiveContainer>
         <PayloadAdminBar
           {...adminBarProps}

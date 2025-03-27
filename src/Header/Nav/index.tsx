@@ -13,17 +13,18 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet'
 import { CMSLink } from '@/components/Link'
-import { Menu } from 'lucide-react'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { ArrowRight, Menu } from 'lucide-react'
+import { buttonVariants } from '@/components/ui/button'
 import Link from 'next/link'
 import { cn } from '@/utilities/ui'
 import { useAuth } from '@/providers/Auth'
 import LogoutButton from '@/components/LogoutButton'
+import DropdownMenu from '@/components/ui/DropdownMenu'
 
 export const HeaderNav: React.FC<{
   data: HeaderType
 }> = ({ data }) => {
-  const { user, logout } = useAuth()
+  const { user } = useAuth()
   const [open, setOpen] = React.useState(false)
   const navItems = data?.navItems || []
   return (
@@ -34,7 +35,7 @@ export const HeaderNav: React.FC<{
           <LogoutButton />
         ) : (
           <Link href="/login" className={cn(buttonVariants())}>
-            Log In
+            Log In <ArrowRight />
           </Link>
         )}
         <Sheet open={open} onOpenChange={setOpen}>
@@ -50,23 +51,46 @@ export const HeaderNav: React.FC<{
               </SheetDescription>
             </SheetHeader>
             <div className="flex flex-col justify-between items-center gap-10 m-auto">
-              {navItems.map(({ link }, i) => (
-                <CMSLink
-                  key={i}
-                  {...link}
-                  appearance="link"
-                  className="text-lg"
-                  onClick={() => setOpen(false)}
-                />
-              ))}
+              {navItems.map(({ link, type, links, label }, i) => {
+                // Return a single link item
+                if (type === 'single' && link)
+                  return (
+                    <CMSLink
+                      key={i}
+                      {...link}
+                      appearance="link"
+                      className="font-normal"
+                      onClick={() => setOpen(false)}
+                    />
+                  )
+
+                // Return a mega menu style link group item
+                if (type === 'group' && links && label) {
+                  return (
+                    <DropdownMenu
+                      key={i}
+                      label={label}
+                      links={links}
+                      linksOnClick={() => setOpen(false)}
+                    />
+                  )
+                }
+              })}
             </div>
           </SheetContent>
         </Sheet>
       </div>
       {/* Desktop Navigation */}
-      <div className="hidden lg:flex justify-between gap-10">
-        {navItems.map(({ link }, i) => {
-          return <CMSLink key={i} {...link} appearance="link" className="font-normal" />
+      <div className="hidden lg:flex gap-10">
+        {navItems.map(({ link, type, links, label }, i) => {
+          // Return a single link item
+          if (type === 'single' && link)
+            return <CMSLink key={i} {...link} appearance="link" className="font-normal" />
+
+          // Return a mega menu style link group item
+          if (type === 'group' && links && label) {
+            return <DropdownMenu key={i} label={label} links={links} />
+          }
         })}
       </div>
     </nav>

@@ -3,7 +3,6 @@
 import { Button, ButtonProps, buttonVariants } from '@/components/ui/button'
 import { useAuth } from '@/providers/Auth'
 import { cn } from '@/utilities/ui'
-import { Slot } from '@radix-ui/react-slot'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
@@ -30,6 +29,7 @@ const LogoutButton = ({
         setLoading(false)
         router.refresh()
       }}
+      disabled={loading}
       {...props}
     >
       {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
