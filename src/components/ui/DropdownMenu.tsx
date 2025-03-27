@@ -1,5 +1,5 @@
 import { MouseEventHandler, useState } from 'react'
-import { Lock, Play } from 'lucide-react'
+import { Play } from 'lucide-react'
 import { Header } from '@/payload-types'
 import { CMSLink } from '../Link'
 import { Button } from './button'

@@ -1,7 +1,7 @@
 import { cn } from '@/utilities/ui'
 import { HTMLAttributes } from 'react'
 
-interface ResponsiveContainerProps extends HTMLAttributes<HTMLDivElement> {}
+type ResponsiveContainerProps = HTMLAttributes<HTMLDivElement>
 
 export default function ResponsiveContainer({ className, ...props }: ResponsiveContainerProps) {
   return (

@@ -11,13 +11,6 @@ import { Media } from '@/components/Media'
 export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
   const { media, size, richText, enableLink, links } = props
 
-  const colsSpanClasses = {
-    full: '12',
-    half: '6',
-    oneThird: '4',
-    twoThirds: '8',
-  }
-
   return (
     <ResponsiveContainer className="my-16">
       <div

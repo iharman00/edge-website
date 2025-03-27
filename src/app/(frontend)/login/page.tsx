@@ -3,7 +3,6 @@
 import { useRouter } from 'next/navigation'
 import { Suspense, useEffect, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { useHeaderTheme } from '@/providers/HeaderTheme'
 import {
   Form,
   FormControl,
@@ -44,11 +43,6 @@ function CallbackUrlWrapper({ onCallbackUrl }: { onCallbackUrl: (callbackUrl: st
 export default function Page() {
   const { user, login } = useAuth()
   const router = useRouter()
-  const { setHeaderTheme } = useHeaderTheme()
-
-  useEffect(() => {
-    setHeaderTheme('light')
-  }, [setHeaderTheme])
 
   const [callbackUrl, setCallbackUrl] = useState('/')
 

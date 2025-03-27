@@ -1,4 +1,4 @@
-import type { Block, Field } from 'payload'
+import type { Block } from 'payload'
 
 import {
   FixedToolbarFeature,
@@ -7,7 +7,6 @@ import {
   lexicalEditor,
 } from '@payloadcms/richtext-lexical'
 
-import { link } from '@/fields/link'
 import { linkGroup } from '@/fields/linkGroup'
 
 export const Content: Block = {

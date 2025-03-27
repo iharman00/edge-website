@@ -9,7 +9,6 @@ import React, { cache } from 'react'
 import { RenderBlocks } from '@/blocks/RenderBlocks'
 import { RenderHero } from '@/heros/RenderHero'
 import { generateMeta } from '@/utilities/generateMeta'
-import PageClient from './page.client'
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import Link from 'next/link'
@@ -71,7 +70,6 @@ export default async function Page({ params: paramsPromise }: Args) {
   // Only shows page if it's not protected or user is logged in
   return (
     <article className="mt-16 mb-24">
-      <PageClient />
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 
