@@ -41,6 +41,7 @@ export const Header: GlobalConfig = {
             maxRows: 8,
             admin: {
               condition: (_, { type } = {}) => type === 'group',
+              initCollapsed: true,
             },
             required: true,
           },

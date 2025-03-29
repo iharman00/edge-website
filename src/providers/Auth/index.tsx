@@ -9,7 +9,7 @@ type Login = (args: { email: string; password: string }) => Promise<User>
 
 type Logout = () => Promise<void>
 
-type AuthContext = {
+export type AuthContext = {
   user?: null | User
   setUser: (user: null | User) => void
   login: Login

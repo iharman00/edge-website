@@ -11,7 +11,6 @@ const LogoutButton = ({
   className,
   variant = 'secondary',
   size,
-  asChild = false,
   children = 'Log Out',
   ...props
 }: ButtonProps) => {
@@ -21,7 +20,6 @@ const LogoutButton = ({
 
   return (
     <Button
-      asChild={asChild}
       className={cn(buttonVariants({ variant: variant, size, className }))}
       onClick={async () => {
         setLoading(true)
