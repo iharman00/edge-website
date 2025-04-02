@@ -69,8 +69,8 @@ const MobileNav = ({ className, navItems, ...props }: MobileNavProps) => {
                     <DropdownTrigger variant="link" asChild>
                       {label}
                     </DropdownTrigger>
-                    <DropdownContent className="-ml-14">
-                      <ul className="flex flex-col">
+                    <DropdownContent className="-ml-10">
+                      <ul className="flex flex-col px-3">
                         {links.map(({ link }, index) => (
                           <li
                             key={index}

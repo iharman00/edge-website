@@ -15,8 +15,8 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
     <ResponsiveContainer className="my-16">
       <div
         className={cn(
-          `flex flex-col lg:flex-row items-center gap-20`,
-          size === 'sideBySideReversed' ? 'lg:flex-row-reverse' : '',
+          `flex flex-col lg:flex-row gap-16`,
+          size === 'sideBySideReversed' && 'lg:flex-row-reverse',
         )}
       >
         {/* Image Section */}
@@ -31,9 +31,9 @@ export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
           </div>
         )}
         {/* Content */}
-        <div className="w-full h-full lg:w-1/2 prose flex flex-col">
+        <div className={cn('w-full h-full lg:w-1/2 prose flex flex-col lg:mt-14', 'pr-14')}>
           {/* Rich Text Section */}
-          <div className="">
+          <div>
             {richText && (
               <RichText className="[&>*:first-child]:mb-4" data={richText} enableGutter={false} />
             )}

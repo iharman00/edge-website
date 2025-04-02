@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, createContext, ReactNode, useContext, Dispatch, useEffect } from 'react'
+import React, { useState, createContext, useContext, Dispatch } from 'react'
 import { Play } from 'lucide-react'
 import { Button, ButtonProps } from './button'
 import { cn } from '@/utilities/ui'
@@ -15,20 +15,32 @@ const DropdownContext = createContext<DropdownContextType | undefined>(undefined
 const useDropdown = () => {
   const context = useContext(DropdownContext)
   if (!context) {
-    throw new Error('DropdownMenu must be used within a DropdownProvider context')
+    throw new Error('useDropdown must be used within a DropdownProvider')
   }
   return context
 }
 
-const DropdownMenu = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
+const DropdownMenu = ({
+  className,
+  children,
+  onMouseEnter,
+  onMouseLeave,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
       <div
         className={cn('relative', className)}
-        onMouseEnter={() => setIsOpen(true)}
-        onMouseLeave={() => setIsOpen(false)}
+        onMouseEnter={(evt) => {
+          setIsOpen(true)
+          onMouseEnter?.(evt)
+        }}
+        onMouseLeave={(evt) => {
+          setIsOpen(false)
+          onMouseLeave?.(evt)
+        }}
         {...props}
       >
         {children}
@@ -52,7 +64,10 @@ const DropdownTrigger = ({
   return (
     <Button
       className={cn('p-0 font-normal', className)}
-      onClick={() => setIsOpen((prev) => !prev)}
+      onClick={(evt) => {
+        setIsOpen((prev) => !prev)
+        onClick?.(evt)
+      }}
       variant={variant}
       {...props}
     >
@@ -73,18 +88,16 @@ const DropdownTrigger = ({
 const DropdownContent = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
   const { isOpen } = useDropdown()
 
-  if (isOpen)
-    return (
-      <div
-        className={cn(
-          'absolute left-0 mt-0.5 w-max bg-white text-black shadow-lg rounded-md transition-opacity duration-200 ease-in-out px-4 py-2',
-          className,
-        )}
-        {...props}
-      />
-    )
-
-  return null
+  return (
+    <div
+      className={cn(
+        'absolute left-0 mt-0.5 w-max bg-white text-black shadow-lg rounded-md px-4 py-2 transform transition-all duration-200 ease-in-out',
+        isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none',
+        className,
+      )}
+      {...props}
+    />
+  )
 }
 
 export { DropdownMenu, DropdownTrigger, DropdownContent }

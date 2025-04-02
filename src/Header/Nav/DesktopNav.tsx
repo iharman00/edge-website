@@ -21,7 +21,7 @@ const DesktopNav = ({ className, navItems, ...props }: DesktopNavProps) => {
             <DropdownMenu key={i}>
               <DropdownTrigger variant="link">{label}</DropdownTrigger>
               <DropdownContent>
-                <ul className="flex flex-col">
+                <ul className="flex flex-col px-3">
                   {links.map(({ link }, index) => (
                     <li key={index} className="px-0 list-none">
                       <CMSLink {...link} appearance="link" className="font-normal" />
