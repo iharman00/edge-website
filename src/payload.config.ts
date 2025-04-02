@@ -18,6 +18,7 @@ import { getServerSideURL } from './utilities/getURL'
 import { Header } from './Header/config'
 import { Footer } from './Footer/config'
 import { Users } from './collections/Users'
+import { admins } from './access/admins'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -76,6 +77,9 @@ export default buildConfig({
     vercelBlobStorage({
       enabled: true, // Optional, defaults to true
       // Specify which collections should use Vercel Blob
+      clientUploads: {
+        access: ({ req }) => req.user?.role === 'admin',
+      },
       collections: {
         media: true,
       },
