@@ -12,6 +12,7 @@ export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText,
         <div className="max-w-[30rem] xl:max-w-[36.5rem] mb-20">
           {/* Content */}
           {richText && <RichText className="mb-8" data={richText} enableGutter={false} />}
+
           {/* CTA */}
           {Array.isArray(links) && links.length > 0 && (
             <div className="flex justify-start gap-4">

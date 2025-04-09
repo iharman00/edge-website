@@ -17,11 +17,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { useAuth } from '@/providers/Auth'
 import { toast } from 'sonner'
-import { Loader2 } from 'lucide-react'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import LogoutButton from '@/components/LogoutButton'
 import { useSearchParams } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 const formSchema = z.object({
   email: z.string().email().max(150),
@@ -131,7 +131,7 @@ export default function Page() {
                   className="w-full h-10 flex justify-center"
                   disabled={form.formState.isSubmitting}
                 >
-                  {form.formState.isSubmitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+                  {form.formState.isSubmitting && <LoadingSpinner />}
                   Log In
                 </Button>
               </form>

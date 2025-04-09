@@ -138,9 +138,12 @@
     padding-left: 1.4rem;
     margin: 0.5rem 0;
   }
-  li {
+  ol {
     list-style-type: decimal;
     padding-left: 1.4rem;
+    margin: 0.5rem 0;
+  }
+  li {
     margin: 0.5rem 0;
   }
 }

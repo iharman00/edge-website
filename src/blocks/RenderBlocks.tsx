@@ -3,9 +3,12 @@ import React, { Fragment } from 'react'
 import type { Page } from '@/payload-types'
 
 import { ContentWithImageBlock } from '@/blocks/ContentWithImage/Component'
+import { FormBlock } from '@/blocks/Form/Component'
+import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 
 const blockComponents = {
   contentWithImage: ContentWithImageBlock,
+  formBlock: FormBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -26,10 +29,10 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <div className="my-16" key={index}>
+                <ResponsiveContainer key={index}>
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
-                </div>
+                </ResponsiveContainer>
               )
             }
           }

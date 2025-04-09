@@ -6,6 +6,7 @@ import { cn } from '@/utilities/ui'
 import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
+import LoadingSpinner from '../LoadingSpinner'
 
 const LogoutButton = ({
   className,
@@ -30,7 +31,7 @@ const LogoutButton = ({
       disabled={loading}
       {...props}
     >
-      {loading && <Loader2 className="h-4 w-4 mr-2 animate-spin" />}
+      {loading && <LoadingSpinner />}
       {children}
     </Button>
   )

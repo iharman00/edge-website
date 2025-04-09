@@ -47,7 +47,10 @@ export const hero: Field = {
           ]
         },
       }),
-      label: false,
+      label: 'Content',
+      admin: {
+        condition: (_, { type } = {}) => type !== 'none',
+      },
     },
     linkGroup({
       overrides: {

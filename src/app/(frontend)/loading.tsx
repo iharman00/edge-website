@@ -1,5 +1,6 @@
 'use client'
 
+import LoadingSpinner from '@/components/LoadingSpinner'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import { cn } from '@/utilities/ui'
 import { Loader2 } from 'lucide-react'
@@ -35,7 +36,7 @@ export default function Loading() {
   return (
     <ResponsiveContainer className="flex flex-col items-center h-screen">
       <div className="mt-24 mb-8 gap-4">
-        <Loader2 className="size-14 mr-2 animate-spin" />
+        <LoadingSpinner className="size-14" />
       </div>
       <div
         className={cn(
