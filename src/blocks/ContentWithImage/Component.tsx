@@ -2,21 +2,21 @@ import { cn } from '@/utilities/ui'
 import React from 'react'
 import RichText from '@/components/RichText'
 
-import type { ContentBlock as ContentBlockProps } from '@/payload-types'
+import type { ContentWithImageBlock as ContentBlockProps } from '@/payload-types'
 
 import { CMSLink } from '../../components/Link'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import { Media } from '@/components/Media'
 
-export const ContentBlock: React.FC<ContentBlockProps> = (props) => {
-  const { media, size, richText, enableLink, links } = props
+export const ContentWithImageBlock: React.FC<ContentBlockProps> = (props) => {
+  const { media, direction, richText, enableLink, links } = props
 
   return (
     <ResponsiveContainer className="my-16">
       <div
         className={cn(
           `flex flex-col lg:flex-row gap-16`,
-          size === 'sideBySideReversed' && 'lg:flex-row-reverse',
+          direction === 'sideBySideReversed' && 'lg:flex-row-reverse',
         )}
       >
         {/* Image Section */}

@@ -18,8 +18,6 @@ import { getServerSideURL } from './utilities/getURL'
 import { Header } from './Header/config'
 import { Footer } from './Footer/config'
 import { Users } from './collections/Users'
-import { admins } from './access/admins'
-
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 

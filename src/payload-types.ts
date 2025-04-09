@@ -296,7 +296,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: ContentBlock[];
+  layout: ContentWithImageBlock[];
   meta?: {
     title?: string | null;
     /**
@@ -314,10 +314,10 @@ export interface Page {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentBlock".
+ * via the `definition` "ContentWithImageBlock".
  */
-export interface ContentBlock {
-  size?: ('sideBySide' | 'sideBySideReversed') | null;
+export interface ContentWithImageBlock {
+  direction?: ('sideBySide' | 'sideBySideReversed') | null;
   media: string | Media;
   richText?: {
     root: {
@@ -356,7 +356,7 @@ export interface ContentBlock {
     | null;
   id?: string | null;
   blockName?: string | null;
-  blockType: 'content';
+  blockType: 'contentWithImage';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -690,7 +690,7 @@ export interface PagesSelect<T extends boolean = true> {
   layout?:
     | T
     | {
-        content?: T | ContentBlockSelect<T>;
+        contentWithImage?: T | ContentWithImageBlockSelect<T>;
       };
   meta?:
     | T
@@ -708,10 +708,10 @@ export interface PagesSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "ContentBlock_select".
+ * via the `definition` "ContentWithImageBlock_select".
  */
-export interface ContentBlockSelect<T extends boolean = true> {
-  size?: T;
+export interface ContentWithImageBlockSelect<T extends boolean = true> {
+  direction?: T;
   media?: T;
   richText?: T;
   enableLink?: T;

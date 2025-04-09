@@ -16,6 +16,7 @@ import { cn } from '@/utilities/ui'
 import { buttonVariants } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { ArrowRight } from 'lucide-react'
+import EmptySite from '@/components/EmptySite'
 
 export async function generateStaticParams() {
   const payload = await getPayload({ config: configPromise })
@@ -56,6 +57,9 @@ export default async function Page({ params: paramsPromise }: Args) {
   const page: RequiredDataFromCollectionSlug<'pages'> | null = await queryPageBySlug({
     slug,
   })
+
+  // If page is not found, and the slug is 'home', show a message
+  if (!page && slug === 'home') return <EmptySite />
 
   if (!page) {
     return <PayloadRedirects url={url} />

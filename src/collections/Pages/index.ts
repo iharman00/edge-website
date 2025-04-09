@@ -13,7 +13,7 @@ import {
   PreviewField,
 } from '@payloadcms/plugin-seo/fields'
 import { hero } from '@/heros/config'
-import { Content } from '@/blocks/Content/config'
+import { ContentWithImage } from '@/blocks/ContentWithImage/config'
 import { admins } from '@/access/admins'
 import { adminsOrMembersOnlyOrPublished } from '@/access/adminsOrMembersOnlyOrPublished'
 
@@ -79,7 +79,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [Content],
+              blocks: [ContentWithImage],
               required: true,
               admin: {
                 initCollapsed: true,

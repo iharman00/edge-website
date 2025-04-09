@@ -9,12 +9,12 @@ import {
 
 import { linkGroup } from '@/fields/linkGroup'
 
-export const Content: Block = {
-  slug: 'content',
-  interfaceName: 'ContentBlock',
+export const ContentWithImage: Block = {
+  slug: 'contentWithImage',
+  interfaceName: 'ContentWithImageBlock',
   fields: [
     {
-      name: 'size',
+      name: 'direction',
       type: 'select',
       defaultValue: 'sideBySide',
       options: [
@@ -52,6 +52,7 @@ export const Content: Block = {
     {
       name: 'enableLink',
       type: 'checkbox',
+      defaultValue: false,
     },
     linkGroup({
       overrides: {
