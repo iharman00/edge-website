@@ -1,18 +1,23 @@
 'use client'
-import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 
+import ReCAPTCHA from 'react-google-recaptcha'
+import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import { useForm, FormProvider } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
-
 import { fields } from './fields'
 import { getClientSideURL } from '@/utilities/getURL'
 import { Card, CardContent } from '@/components/ui/card'
 import { SquareCheck } from 'lucide-react'
 import LoadingSpinner from '@/components/LoadingSpinner'
+
+const recaptchaSitekey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
+if (!recaptchaSitekey) {
+  throw new Error('NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing.')
+}
 
 export type FormBlockType = {
   blockName?: string
@@ -42,6 +47,8 @@ export const FormBlock: React.FC<
     register,
   } = formMethods
 
+  const recaptchaRef = useRef<string>(null)
+
   // Not using React hook form's `watch` because it doesn't work with the `FormProvider` and `useForm` combination
   const [isLoading, setIsLoading] = useState(false)
   const [hasSubmitted, setHasSubmitted] = useState<boolean>()
@@ -50,7 +57,6 @@ export const FormBlock: React.FC<
 
   const onSubmit = useCallback(
     (data: FormFieldBlock[]) => {
-      let loadingTimerID: ReturnType<typeof setTimeout>
       const submitForm = async () => {
         setError(undefined)
 
@@ -59,11 +65,14 @@ export const FormBlock: React.FC<
           value,
         }))
 
+        setIsLoading(true)
+
         try {
           const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
             body: JSON.stringify({
               form: formID,
               submissionData: dataToSend,
+              recaptchaToken: recaptchaRef.current,
             }),
             headers: {
               'Content-Type': 'application/json',
@@ -147,7 +156,11 @@ export const FormBlock: React.FC<
                       return null
                     })}
                 </div>
-
+                <ReCAPTCHA
+                  sitekey={recaptchaSitekey}
+                  onChange={(token) => (recaptchaRef.current = token)}
+                />
+                ,
                 <Button form={formID} type="submit" variant="default">
                   {isLoading && <LoadingSpinner />}
                   {submitButtonLabel}

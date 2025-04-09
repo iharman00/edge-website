@@ -10,6 +10,16 @@ import { getServerSideURL } from '@/utilities/getURL'
 import { Page } from '@/payload-types'
 import { admins } from '@/access/admins'
 
+const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY
+if (!recaptchaSecretKey) {
+  throw new Error('RECAPTCHA_SECRET_KEY is missing.')
+}
+
+const vercelBlobToken = process.env.BLOB_READ_WRITE_TOKEN
+if (!vercelBlobToken) {
+  throw new Error('BLOB_READ_WRITE_TOKEN is missing.')
+}
+
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Elmvale Horticulture Society` : 'Elmvale Horticulture Society'
 }
@@ -31,7 +41,7 @@ export const plugins: Plugin[] = [
       media: true,
     },
     // Token provided by Vercel once Blob storage is added to your Vercel project
-    token: process.env.BLOB_READ_WRITE_TOKEN,
+    token: vercelBlobToken,
   }),
   redirectsPlugin({
     collections: ['pages'],
@@ -87,6 +97,39 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+      },
+    },
+    formSubmissionOverrides: {
+      access: {
+        create: async ({ data }) => {
+          if (!data?.recaptchaToken) {
+            // Stop the form submission if recaptcha token is not provided
+            return false
+          }
+
+          const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${data.recaptchaToken}`
+
+          const captchaRes = await fetch(verifyURL, {
+            method: 'POST',
+          })
+            .then((res) => res.json())
+            .catch((err) => {
+              throw new Error(`Recaptcha verification failed: ${err}`)
+            })
+
+          console.log(captchaRes)
+
+          if (!captchaRes?.success) {
+            // Stop the form submission if recaptcha verification fails
+            return false
+          }
+
+          // Proceed with form submission if recaptcha verification is successful
+          return true
+        },
+        read: admins,
+        update: () => false,
+        delete: admins,
       },
     },
   }),
