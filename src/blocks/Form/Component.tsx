@@ -4,7 +4,7 @@ import ReCAPTCHA from 'react-google-recaptcha'
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import { useRouter } from 'next/navigation'
 import React, { useCallback, useRef, useState } from 'react'
-import { useForm, FormProvider } from 'react-hook-form'
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
 import type { SerializedEditorState } from '@payloadcms/richtext-lexical/lexical'
@@ -13,11 +13,7 @@ import { getClientSideURL } from '@/utilities/getURL'
 import { Card, CardContent } from '@/components/ui/card'
 import { SquareCheck } from 'lucide-react'
 import LoadingSpinner from '@/components/LoadingSpinner'
-
-const recaptchaSitekey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY
-if (!recaptchaSitekey) {
-  throw new Error('NEXT_PUBLIC_RECAPTCHA_SITE_KEY is missing.')
-}
+import { NEXT_PUBLIC_RECAPTCHA_SITE_KEY } from '@/environment'
 
 export type FormBlockType = {
   blockName?: string
@@ -37,103 +33,87 @@ export const FormBlock: React.FC<
     introContent,
   } = props
 
-  const formMethods = useForm({
+  const form = useForm({
     defaultValues: formFromProps.fields,
   })
   const {
     control,
-    formState: { errors },
+    setError,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
     handleSubmit,
     register,
-  } = formMethods
+  } = form
 
-  const recaptchaRef = useRef<string>(null)
-
-  // Not using React hook form's `watch` because it doesn't work with the `FormProvider` and `useForm` combination
-  const [isLoading, setIsLoading] = useState(false)
-  const [hasSubmitted, setHasSubmitted] = useState<boolean>()
-  const [error, setError] = useState<{ message: string; status?: string } | undefined>()
+  const recaptchaTokenRef = useRef<string>(null)
   const router = useRouter()
 
-  const onSubmit = useCallback(
-    (data: FormFieldBlock[]) => {
-      const submitForm = async () => {
-        setError(undefined)
+  const onSubmit: SubmitHandler<FormFieldBlock[]> = async (data) => {
+    if (!recaptchaTokenRef.current) {
+      setError('root', { message: 'Please complete the reCAPTCHA' })
+      return
+    }
+    const dataToSend = Object.entries(data).map(([name, value]) => ({
+      field: name,
+      value,
+    }))
 
-        const dataToSend = Object.entries(data).map(([name, value]) => ({
-          field: name,
-          value,
-        }))
+    try {
+      const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
+        body: JSON.stringify({
+          form: formID,
+          submissionData: dataToSend,
+          recaptchaToken: recaptchaTokenRef.current,
+        }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        method: 'POST',
+      })
 
-        setIsLoading(true)
+      const res = await req.json()
 
-        try {
-          const req = await fetch(`${getClientSideURL()}/api/form-submissions`, {
-            body: JSON.stringify({
-              form: formID,
-              submissionData: dataToSend,
-              recaptchaToken: recaptchaRef.current,
-            }),
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            method: 'POST',
-          })
+      if (req.status >= 400) {
+        setError('root', {
+          message: res.errors?.[0]?.message || 'Internal Server Error',
+        })
 
-          const res = await req.json()
-
-          if (req.status >= 400) {
-            setIsLoading(false)
-
-            setError({
-              message: res.errors?.[0]?.message || 'Internal Server Error',
-              status: res.status,
-            })
-
-            return
-          }
-
-          setIsLoading(false)
-          setHasSubmitted(true)
-
-          if (confirmationType === 'redirect' && redirect) {
-            const { url } = redirect
-
-            const redirectUrl = url
-
-            if (redirectUrl) router.push(redirectUrl)
-          }
-        } catch (err) {
-          console.warn(err)
-          setIsLoading(false)
-          setError({
-            message: 'Something went wrong.',
-          })
-        }
+        return
       }
 
-      void submitForm()
-    },
-    [router, formID, redirect, confirmationType],
-  )
+      if (confirmationType === 'redirect' && redirect) {
+        const { url } = redirect
+
+        const redirectUrl = url
+
+        if (redirectUrl) router.push(redirectUrl)
+      }
+    } catch (err) {
+      console.warn(err)
+      setError('root', {
+        message: 'Something went wrong, please try again later.',
+      })
+    }
+  }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center md:gap-8">
       <RichText className="mb-8 lg:mb-12 max-w-md" data={introContent} enableGutter={false} />
       <Card className="w-full max-w-md ">
         <CardContent className="h-full">
-          <FormProvider {...formMethods}>
-            {!isLoading && hasSubmitted && confirmationType === 'message' && (
+          <FormProvider {...form}>
+            {!isSubmitting && isSubmitSuccessful && confirmationType === 'message' && (
               <div className="flex items-center justify-center gap-5 h-full">
                 <SquareCheck className="size-16 text-primary" />
                 <RichText data={confirmationMessage} />
               </div>
             )}
-            {isLoading && !hasSubmitted && <p>Loading, please wait...</p>}
-            {error && <div>{`${error.status || '500'}: ${error.message || ''}`}</div>}
-            {!hasSubmitted && (
-              <form id={formID} onSubmit={handleSubmit(onSubmit)} className="w-full space-y-6">
-                <div className="mb-4 last:mb-0">
+            {!isSubmitSuccessful && (
+              <form
+                id={formID}
+                onSubmit={handleSubmit(onSubmit)}
+                className="w-full flex flex-col justify-center gap-6"
+              >
+                <div>
                   {formFromProps &&
                     formFromProps.fields &&
                     formFromProps.fields?.map((field, index) => {
@@ -145,7 +125,7 @@ export const FormBlock: React.FC<
                             <Field
                               form={formFromProps}
                               {...field}
-                              {...formMethods}
+                              {...form}
                               control={control}
                               errors={errors}
                               register={register}
@@ -157,12 +137,19 @@ export const FormBlock: React.FC<
                     })}
                 </div>
                 <ReCAPTCHA
-                  sitekey={recaptchaSitekey}
-                  onChange={(token) => (recaptchaRef.current = token)}
+                  sitekey={NEXT_PUBLIC_RECAPTCHA_SITE_KEY}
+                  onChange={(token) => (recaptchaTokenRef.current = token)}
+                  className="mx-auto"
                 />
-                ,
-                <Button form={formID} type="submit" variant="default">
-                  {isLoading && <LoadingSpinner />}
+                {errors.root && <div className="text-red-500 text-sm">{errors.root?.message}</div>}
+                <Button
+                  form={formID}
+                  className="w-full justify-center"
+                  type="submit"
+                  variant="default"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting && <LoadingSpinner />}
                   {submitButtonLabel}
                 </Button>
               </form>

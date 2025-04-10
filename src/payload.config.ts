@@ -11,6 +11,8 @@ import { Header } from './Header/config'
 import { Footer } from './Footer/config'
 import { Users } from './collections/Users'
 import { plugins } from './plugins'
+import { DATABASE_URI, PAYLOAD_SECRET } from './environment'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -45,12 +47,12 @@ export default buildConfig({
   },
   collections: [Users, Media, Pages],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: PAYLOAD_SECRET,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
   db: mongooseAdapter({
-    url: process.env.DATABASE_URI || '',
+    url: DATABASE_URI,
   }),
   sharp,
   globals: [Header, Footer],

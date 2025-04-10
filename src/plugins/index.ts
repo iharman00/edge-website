@@ -9,16 +9,7 @@ import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { getServerSideURL } from '@/utilities/getURL'
 import { Page } from '@/payload-types'
 import { admins } from '@/access/admins'
-
-const recaptchaSecretKey = process.env.RECAPTCHA_SECRET_KEY
-if (!recaptchaSecretKey) {
-  throw new Error('RECAPTCHA_SECRET_KEY is missing.')
-}
-
-const vercelBlobToken = process.env.BLOB_READ_WRITE_TOKEN
-if (!vercelBlobToken) {
-  throw new Error('BLOB_READ_WRITE_TOKEN is missing.')
-}
+import { RECAPTCHA_SECRET_KEY, BLOB_READ_WRITE_TOKEN } from '@/environment'
 
 const generateTitle: GenerateTitle<Page> = ({ doc }) => {
   return doc?.title ? `${doc.title} | Elmvale Horticulture Society` : 'Elmvale Horticulture Society'
@@ -41,7 +32,7 @@ export const plugins: Plugin[] = [
       media: true,
     },
     // Token provided by Vercel once Blob storage is added to your Vercel project
-    token: vercelBlobToken,
+    token: BLOB_READ_WRITE_TOKEN,
   }),
   redirectsPlugin({
     collections: ['pages'],
@@ -107,7 +98,7 @@ export const plugins: Plugin[] = [
             return false
           }
 
-          const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${recaptchaSecretKey}&response=${data.recaptchaToken}`
+          const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${data.recaptchaToken}`
 
           const captchaRes = await fetch(verifyURL, {
             method: 'POST',
@@ -116,8 +107,6 @@ export const plugins: Plugin[] = [
             .catch((err) => {
               throw new Error(`Recaptcha verification failed: ${err}`)
             })
-
-          console.log(captchaRes)
 
           if (!captchaRes?.success) {
             // Stop the form submission if recaptcha verification fails
