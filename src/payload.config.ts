@@ -12,6 +12,7 @@ import { Footer } from './Footer/config'
 import { Users } from './collections/Users'
 import { plugins } from './plugins'
 import { DATABASE_URI, PAYLOAD_SECRET } from './environment'
+import { Events } from './collections/Events'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -45,7 +46,7 @@ export default buildConfig({
       ],
     },
   },
-  collections: [Users, Media, Pages],
+  collections: [Users, Media, Pages, Events],
   editor: lexicalEditor(),
   secret: PAYLOAD_SECRET,
   typescript: {

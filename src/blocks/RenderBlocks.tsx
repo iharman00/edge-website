@@ -4,11 +4,13 @@ import type { Page } from '@/payload-types'
 
 import { ContentWithImageBlock } from '@/blocks/ContentWithImage/Component'
 import { FormBlock } from '@/blocks/Form/Component'
+import EventsBlock from './Events/Component'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 
 const blockComponents = {
   contentWithImage: ContentWithImageBlock,
   formBlock: FormBlock,
+  eventsBlock: EventsBlock,
 }
 
 export const RenderBlocks: React.FC<{

@@ -3,7 +3,7 @@
 import ReCAPTCHA from 'react-google-recaptcha'
 import type { FormFieldBlock, Form as FormType } from '@payloadcms/plugin-form-builder/types'
 import { useRouter } from 'next/navigation'
-import React, { useCallback, useRef, useState } from 'react'
+import { useRef } from 'react'
 import { useForm, FormProvider, SubmitHandler } from 'react-hook-form'
 import RichText from '@/components/RichText'
 import { Button } from '@/components/ui/button'
@@ -144,7 +144,7 @@ export const FormBlock: React.FC<
                 {errors.root && <div className="text-red-500 text-sm">{errors.root?.message}</div>}
                 <Button
                   form={formID}
-                  className="w-full justify-center"
+                  className="w-full"
                   type="submit"
                   variant="default"
                   disabled={isSubmitting}

@@ -3,7 +3,6 @@
 import LoadingSpinner from '@/components/LoadingSpinner'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import { cn } from '@/utilities/ui'
-import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 const gardeningTips = [

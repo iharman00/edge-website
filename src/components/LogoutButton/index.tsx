@@ -3,7 +3,6 @@
 import { Button, ButtonProps, buttonVariants } from '@/components/ui/button'
 import { useAuth } from '@/providers/Auth'
 import { cn } from '@/utilities/ui'
-import { Loader2 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import React, { useState } from 'react'
 import LoadingSpinner from '../LoadingSpinner'
