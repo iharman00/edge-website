@@ -583,10 +583,6 @@ export interface EventsBlock {
     };
     [k: string]: unknown;
   } | null;
-  /**
-   * Sorts events by date, choose ascending when showing future events, choose descending otherwise.
-   */
-  eventsSortingOrder: 'ascending' | 'descending';
   showEvents?: ('showPastEvents' | 'showFutureEvents') | null;
   id?: string | null;
   blockName?: string | null;
@@ -1042,7 +1038,6 @@ export interface FormBlockSelect<T extends boolean = true> {
  */
 export interface EventsBlockSelect<T extends boolean = true> {
   richText?: T;
-  eventsSortingOrder?: T;
   showEvents?: T;
   id?: T;
   blockName?: T;

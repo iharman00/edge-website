@@ -26,26 +26,6 @@ export const EventsBlock: Block = {
       label: false,
     },
     {
-      name: 'eventsSortingOrder',
-      type: 'select',
-      options: [
-        {
-          label: 'Ascending',
-          value: 'ascending',
-        },
-        {
-          label: 'Descending',
-          value: 'descending',
-        },
-      ],
-      defaultValue: 'ascending',
-      required: true,
-      admin: {
-        description:
-          'Sorts events by date, choose ascending when showing future events, choose descending otherwise.',
-      },
-    },
-    {
       name: 'showEvents',
       label: 'What events to show?',
       type: 'select',

@@ -65,6 +65,9 @@ importers:
       '@tailwindcss/postcss':
         specifier: ^4.0.9
         version: 4.1.0
+      '@tanstack/react-query':
+        specifier: ^5.72.2
+        version: 5.72.2(react@19.0.0)
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -1822,6 +1825,14 @@ packages:
 
   '@tailwindcss/postcss@4.1.0':
     resolution: {integrity: sha512-b2NWFAFfLXY7960jLY5QkKbuYKrQUULx60XU3BCzyaUQpU/7lLf3n2CiHibZPdBq5CIXrUp10wdxhV0EI0Js2g==}
+
+  '@tanstack/query-core@5.72.2':
+    resolution: {integrity: sha512-fxl9/0yk3mD/FwTmVEf1/H6N5B975H0luT+icKyX566w6uJG0x6o+Yl+I38wJRCaogiMkstByt+seXfDbWDAcA==}
+
+  '@tanstack/react-query@5.72.2':
+    resolution: {integrity: sha512-SVNHzyBUYiis+XiCl+8yiPZmMYei2AKYY94wM/zpvB5l1jxqOo82FQTziSJ4pBi96jtYqvYrTMxWynmbQh3XKw==}
+    peerDependencies:
+      react: ^18 || ^19
 
   '@tokenizer/token@0.3.0':
     resolution: {integrity: sha512-OvjF+z51L3ov0OyAU0duzsYuvO01PH7x4t6DJx+guahgTnBHkhJdG7soQeTSFLWN3efnHyibZ4Z8l2EuWwJN3A==}
@@ -6584,6 +6595,13 @@ snapshots:
       '@tailwindcss/oxide': 4.1.0
       postcss: 8.5.3
       tailwindcss: 4.1.0
+
+  '@tanstack/query-core@5.72.2': {}
+
+  '@tanstack/react-query@5.72.2(react@19.0.0)':
+    dependencies:
+      '@tanstack/query-core': 5.72.2
+      react: 19.0.0
 
   '@tokenizer/token@0.3.0': {}
 

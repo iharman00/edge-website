@@ -31,7 +31,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <ResponsiveContainer key={index}>
+                <ResponsiveContainer key={index} className="mt-12">
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </ResponsiveContainer>

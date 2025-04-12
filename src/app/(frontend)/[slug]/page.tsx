@@ -73,7 +73,7 @@ export default async function Page({ params: paramsPromise }: Args) {
 
   // Only shows page if it's not protected or user is logged in
   return (
-    <article className="mt-16 mb-24">
+    <article className="mt-10 mb-24">
       {/* Allows redirects for valid pages too */}
       <PayloadRedirects disableNotFound url={url} />
 

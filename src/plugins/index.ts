@@ -93,28 +93,28 @@ export const plugins: Plugin[] = [
     formSubmissionOverrides: {
       access: {
         create: async ({ data }) => {
-          if (!data?.recaptchaToken) {
-            // Stop the form submission if recaptcha token is not provided
-            return false
-          }
+          try {
+            if (!data?.recaptchaToken) {
+              return false // Stop the form submission if recaptcha token is not provided
+            }
 
-          const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${data.recaptchaToken}`
+            const verifyURL = `https://www.google.com/recaptcha/api/siteverify?secret=${RECAPTCHA_SECRET_KEY}&response=${data.recaptchaToken}`
 
-          const captchaRes = await fetch(verifyURL, {
-            method: 'POST',
-          })
-            .then((res) => res.json())
-            .catch((err) => {
-              throw new Error(`Recaptcha verification failed: ${err}`)
+            const captchaRes = await fetch(verifyURL, {
+              method: 'POST',
             })
 
-          if (!captchaRes?.success) {
-            // Stop the form submission if recaptcha verification fails
-            return false
-          }
+            const res = await captchaRes.json()
 
-          // Proceed with form submission if recaptcha verification is successful
-          return true
+            if (!res?.success) {
+              return false // Stop the form submission if recaptcha verification fails
+            }
+
+            return true
+          } catch (error) {
+            console.log(error)
+            return false // Stop the form submission if therse's an error
+          }
         },
         read: admins,
         update: () => false,
