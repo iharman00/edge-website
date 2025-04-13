@@ -66,8 +66,9 @@ export const plugins: Plugin[] = [
     },
     formOverrides: {
       access: {
+        create: admins,
         read: admins,
-        update: () => false,
+        update: admins,
         delete: admins,
       },
       fields: ({ defaultFields }) => {
