@@ -29,11 +29,11 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
             <Logo loading="eager" priority="high" />
           </Link>
           <HeaderNav data={data} />
-          <div className="hidden lg:block">
+          <div className="hidden xl:block">
             {user ? (
               <LogoutButton />
             ) : (
-              <Link href="/login" className={cn(buttonVariants(), 'hidden lg:flex')}>
+              <Link href="/login" className={cn(buttonVariants(), 'hidden xl:flex')}>
                 Log In <ArrowRight />
               </Link>
             )}

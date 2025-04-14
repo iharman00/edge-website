@@ -6,11 +6,13 @@ import { ContentWithImageBlock } from '@/blocks/ContentWithImage/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import EventsBlock from './Events/Component'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
+import ContentWithStepsBlock from './ContentWithSteps/component'
 
 const blockComponents = {
   contentWithImage: ContentWithImageBlock,
   formBlock: FormBlock,
   eventsBlock: EventsBlock,
+  contentWithSteps: ContentWithStepsBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -31,7 +33,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <ResponsiveContainer key={index} className="mt-12">
+                <ResponsiveContainer key={index} className="my-20">
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </ResponsiveContainer>

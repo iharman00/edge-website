@@ -9,7 +9,7 @@ interface DesktopNavProps extends React.HTMLAttributes<HTMLDivElement> {
 
 const DesktopNav = ({ className, navItems, ...props }: DesktopNavProps) => {
   return (
-    <div className={cn('hidden lg:flex gap-10', className)} {...props}>
+    <div className={cn('hidden xl:flex gap-10', className)} {...props}>
       {navItems.map(({ link, type, links, label }, i) => {
         // Return a single link item
         if (type === 'single' && link)

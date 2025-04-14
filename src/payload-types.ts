@@ -163,7 +163,7 @@ export interface User {
  */
 export interface Media {
   id: string;
-  alt?: string | null;
+  alt: string;
   caption?: {
     root: {
       type: string;
@@ -259,7 +259,7 @@ export interface Page {
   isProtected: boolean;
   hero: {
     type: 'none' | 'highImpact' | 'lowImpact';
-    richText?: {
+    content?: {
       root: {
         type: string;
         children: {
@@ -302,7 +302,7 @@ export interface Page {
       | null;
     media?: (string | null) | Media;
   };
-  layout: (ContentWithImageBlock | FormBlock | EventsBlock)[];
+  layout: (ContentWithImageBlock | ContentWithStepsBlock | FormBlock | EventsBlock)[];
   meta?: {
     title?: string | null;
     /**
@@ -325,7 +325,7 @@ export interface Page {
 export interface ContentWithImageBlock {
   direction?: ('sideBySide' | 'sideBySideReversed') | null;
   media: string | Media;
-  richText?: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -363,6 +363,53 @@ export interface ContentWithImageBlock {
   id?: string | null;
   blockName?: string | null;
   blockType: 'contentWithImage';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentWithStepsBlock".
+ */
+export interface ContentWithStepsBlock {
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: string;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  image: string | Media;
+  steps: {
+    stepTitle: string;
+    stepDescription: {
+      root: {
+        type: string;
+        children: {
+          type: string;
+          version: number;
+          [k: string]: unknown;
+        }[];
+        direction: ('ltr' | 'rtl') | null;
+        format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+        indent: number;
+        version: number;
+      };
+      [k: string]: unknown;
+    };
+    enableDownloadableResource: boolean;
+    resourceLabel?: string | null;
+    downloadableResource?: (string | null) | Media;
+    id?: string | null;
+  }[];
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'contentWithSteps';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -568,7 +615,7 @@ export interface Form {
  * via the `definition` "EventsBlock".
  */
 export interface EventsBlock {
-  richText?: {
+  content?: {
     root: {
       type: string;
       children: {
@@ -949,7 +996,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         type?: T;
-        richText?: T;
+        content?: T;
         links?:
           | T
           | {
@@ -978,6 +1025,7 @@ export interface PagesSelect<T extends boolean = true> {
     | T
     | {
         contentWithImage?: T | ContentWithImageBlockSelect<T>;
+        contentWithSteps?: T | ContentWithStepsBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
         eventsBlock?: T | EventsBlockSelect<T>;
       };
@@ -1002,7 +1050,7 @@ export interface PagesSelect<T extends boolean = true> {
 export interface ContentWithImageBlockSelect<T extends boolean = true> {
   direction?: T;
   media?: T;
-  richText?: T;
+  content?: T;
   enableLink?: T;
   links?:
     | T
@@ -1024,6 +1072,26 @@ export interface ContentWithImageBlockSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "ContentWithStepsBlock_select".
+ */
+export interface ContentWithStepsBlockSelect<T extends boolean = true> {
+  content?: T;
+  image?: T;
+  steps?:
+    | T
+    | {
+        stepTitle?: T;
+        stepDescription?: T;
+        enableDownloadableResource?: T;
+        resourceLabel?: T;
+        downloadableResource?: T;
+        id?: T;
+      };
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "FormBlock_select".
  */
 export interface FormBlockSelect<T extends boolean = true> {
@@ -1037,7 +1105,7 @@ export interface FormBlockSelect<T extends boolean = true> {
  * via the `definition` "EventsBlock_select".
  */
 export interface EventsBlockSelect<T extends boolean = true> {
-  richText?: T;
+  content?: T;
   showEvents?: T;
   id?: T;
   blockName?: T;

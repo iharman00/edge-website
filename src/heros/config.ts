@@ -35,7 +35,7 @@ export const hero: Field = {
       required: true,
     },
     {
-      name: 'richText',
+      name: 'content',
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
@@ -47,10 +47,10 @@ export const hero: Field = {
           ]
         },
       }),
-      label: 'Content',
       admin: {
         condition: (_, { type } = {}) => type !== 'none',
       },
+      required: true,
     },
     linkGroup({
       overrides: {

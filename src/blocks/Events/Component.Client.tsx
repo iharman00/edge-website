@@ -11,14 +11,14 @@ import fetchEvents from '@/actions/fetchEvents'
 import { Event, EventsBlock } from '@/payload-types'
 import { PaginatedDocs } from 'payload'
 
-interface EventsBlockClientProps extends Pick<EventsBlock, 'richText' | 'showEvents'> {
+interface EventsBlockClientProps extends Pick<EventsBlock, 'content' | 'showEvents'> {
   initialEvents: PaginatedDocs<Event>
   limit: number
 }
 
 const EventsBlockClient = ({
   showEvents,
-  richText,
+  content,
   initialEvents,
   limit,
 }: EventsBlockClientProps) => {
@@ -42,9 +42,9 @@ const EventsBlockClient = ({
   return (
     <div>
       {/* RichText Block */}
-      {richText && (
+      {content && (
         <div className="max-w-md mb-10">
-          <RichText className="[&>*:first-child]:mb-4" data={richText} enableGutter={false} />
+          <RichText className="[&>*:first-child]:mb-4" data={content} enableGutter={false} />
         </div>
       )}
 

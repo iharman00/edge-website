@@ -11,7 +11,7 @@ export const EventsBlock: Block = {
   interfaceName: 'EventsBlock',
   fields: [
     {
-      name: 'richText',
+      name: 'content',
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
@@ -23,7 +23,6 @@ export const EventsBlock: Block = {
           ]
         },
       }),
-      label: false,
     },
     {
       name: 'showEvents',

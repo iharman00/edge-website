@@ -54,7 +54,7 @@ export const Header: GlobalConfig = {
           },
         }),
       ],
-      maxRows: 5,
+      maxRows: 6,
       admin: {
         initCollapsed: true,
         components: {

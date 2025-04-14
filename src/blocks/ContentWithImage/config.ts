@@ -35,7 +35,7 @@ export const ContentWithImage: Block = {
       required: true,
     },
     {
-      name: 'richText',
+      name: 'content',
       type: 'richText',
       editor: lexicalEditor({
         features: ({ rootFeatures }) => {
@@ -47,7 +47,6 @@ export const ContentWithImage: Block = {
           ]
         },
       }),
-      label: false,
     },
     {
       name: 'enableLink',

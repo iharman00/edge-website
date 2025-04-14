@@ -18,6 +18,7 @@ import { adminsOrMembersOnlyOrPublished } from '@/access/adminsOrMembersOnlyOrPu
 import { ContentWithImage } from '@/blocks/ContentWithImage/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { EventsBlock } from '@/blocks/Events/config'
+import { ContentWithSteps } from '@/blocks/ContentWithSteps/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -81,7 +82,7 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [ContentWithImage, FormBlock, EventsBlock],
+              blocks: [ContentWithImage, ContentWithSteps, FormBlock, EventsBlock],
               required: true,
               admin: {
                 initCollapsed: true,

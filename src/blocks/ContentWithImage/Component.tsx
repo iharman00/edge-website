@@ -8,12 +8,12 @@ import { CMSLink } from '../../components/Link'
 import { Media } from '@/components/Media'
 
 export const ContentWithImageBlock: React.FC<ContentBlockProps> = (props) => {
-  const { media, direction, richText, enableLink, links } = props
+  const { media, direction, content, enableLink, links } = props
 
   return (
     <div
       className={cn(
-        `flex flex-col lg:flex-row gap-16 mmy-16`,
+        `flex flex-col lg:flex-row gap-16`,
         direction === 'sideBySideReversed' && 'lg:flex-row-reverse',
       )}
     >
@@ -32,8 +32,8 @@ export const ContentWithImageBlock: React.FC<ContentBlockProps> = (props) => {
       <div className={cn('w-full h-full lg:w-1/2 prose flex flex-col lg:mt-14', 'pr-14')}>
         {/* Rich Text Section */}
         <div>
-          {richText && (
-            <RichText className="[&>*:first-child]:mb-4" data={richText} enableGutter={false} />
+          {content && (
+            <RichText className="[&>*:first-child]:mb-4" data={content} enableGutter={false} />
           )}
         </div>
         {/* Link */}

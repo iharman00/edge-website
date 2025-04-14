@@ -28,7 +28,7 @@ const MobileNav = ({ className, navItems, ...props }: MobileNavProps) => {
   const [isSheetopen, setIsSheetOpen] = useState(false)
 
   return (
-    <div className={cn('flex justify-between gap-4 lg:hidden', className)} {...props}>
+    <div className={cn('flex justify-between gap-4 xl:hidden', className)} {...props}>
       {user ? (
         <LogoutButton />
       ) : (

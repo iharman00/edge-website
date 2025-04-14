@@ -5,7 +5,7 @@ import EventsBlockClient from './Component.Client'
 
 const payload = await getPayload({ config: configPromise })
 
-const EventsBlock = async ({ richText, showEvents }: EventsBlock) => {
+const EventsBlock = async ({ content, showEvents }: EventsBlock) => {
   const limit = 6 // Set the limit for the number of events to fetch per request
 
   // Fetch the initial events on the server to avoid loading state on the client
@@ -26,7 +26,7 @@ const EventsBlock = async ({ richText, showEvents }: EventsBlock) => {
 
   return (
     <EventsBlockClient
-      richText={richText}
+      content={content}
       showEvents={showEvents}
       initialEvents={docs}
       limit={limit}

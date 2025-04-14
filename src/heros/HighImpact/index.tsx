@@ -5,13 +5,13 @@ import { Media } from '@/components/Media'
 import RichText from '@/components/RichText'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 
-export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, richText, stats }) => {
+export const HighImpactHero: React.FC<Page['hero']> = ({ links, media, content, stats }) => {
   return (
-    <div className="overflow-clip">
+    <div className="overflow-clip mb-20 ">
       <ResponsiveContainer>
         <div className="max-w-[30rem] xl:max-w-[36.5rem] mb-20">
           {/* Content */}
-          {richText && <RichText className="mb-8" data={richText} enableGutter={false} />}
+          {content && <RichText className="mb-8" data={content} enableGutter={false} />}
 
           {/* CTA */}
           {Array.isArray(links) && links.length > 0 && (
