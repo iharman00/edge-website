@@ -16,14 +16,14 @@ import Link from 'next/link'
 const ContentWithStepsBlock = ({ steps, content, image }: ContentBlockProps) => {
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-24 items-center">
-      <div className="space-y-4">
+      <div className="space-y-8">
         {content && (
           <RichText className="[&>*:first-child]:mb-4" data={content} enableGutter={false} />
         )}
         <Accordion type="single" collapsible className="w-full" defaultValue="0">
           {steps.map((step, index) => (
-            <AccordionItem key={step.id} value={index.toString()} className="w-full">
-              <AccordionTrigger className="text-lg">{step.stepTitle}</AccordionTrigger>
+            <AccordionItem key={step.id} value={index.toString()} className="w-full border-b-0">
+              <AccordionTrigger className="text-base">{step.stepTitle}</AccordionTrigger>
               <AccordionContent>
                 <div className="space-y-4">
                   <RichText data={step.stepDescription} enableGutter={false} />

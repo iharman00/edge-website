@@ -19,6 +19,8 @@ import { ContentWithImage } from '@/blocks/ContentWithImage/config'
 import { FormBlock } from '@/blocks/Form/config'
 import { EventsBlock } from '@/blocks/Events/config'
 import { ContentWithSteps } from '@/blocks/ContentWithSteps/config'
+import { Content } from '@/blocks/Content/config'
+import { ImageGallery } from '@/blocks/ImageGallery/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -82,7 +84,14 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [ContentWithImage, ContentWithSteps, FormBlock, EventsBlock],
+              blocks: [
+                Content,
+                ContentWithImage,
+                ContentWithSteps,
+                ImageGallery,
+                FormBlock,
+                EventsBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

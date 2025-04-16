@@ -96,9 +96,9 @@ export const FormBlock: React.FC<
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 justify-items-center md:gap-8">
-      <RichText className="mb-8 lg:mb-12 max-w-md" data={introContent} enableGutter={false} />
-      <Card className="w-full max-w-md ">
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-30">
+      <RichText data={introContent} enableGutter={false} className="w-full" />
+      <Card>
         <CardContent className="h-full">
           <FormProvider {...form}>
             {!isSubmitting && isSubmitSuccessful && confirmationType === 'message' && (

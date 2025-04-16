@@ -7,12 +7,16 @@ import { FormBlock } from '@/blocks/Form/Component'
 import EventsBlock from './Events/Component'
 import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 import ContentWithStepsBlock from './ContentWithSteps/component'
+import { ContentBlock } from './Content/Component'
+import ImageGalleryBlock from './ImageGallery/Component'
 
 const blockComponents = {
+  content: ContentBlock,
   contentWithImage: ContentWithImageBlock,
+  contentWithSteps: ContentWithStepsBlock,
+  imageGallery: ImageGalleryBlock,
   formBlock: FormBlock,
   eventsBlock: EventsBlock,
-  contentWithSteps: ContentWithStepsBlock,
 }
 
 export const RenderBlocks: React.FC<{
@@ -33,7 +37,7 @@ export const RenderBlocks: React.FC<{
 
             if (Block) {
               return (
-                <ResponsiveContainer key={index} className="my-20">
+                <ResponsiveContainer key={index} className="my-10 mx-auto max-w-[85rem]">
                   {/* @ts-expect-error there may be some mismatch between the expected types here */}
                   <Block {...block} disableInnerContainer />
                 </ResponsiveContainer>

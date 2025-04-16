@@ -19,7 +19,7 @@ export const ContentWithImageBlock: React.FC<ContentBlockProps> = (props) => {
     >
       {/* Image Section */}
       {media && typeof media === 'object' && (
-        <div className="w-full lg:w-1/2 p-2 lg:p-6">
+        <div className="w-full lg:w-1/2">
           <Media
             className="object-cover w-full"
             imgClassName="rounded-lg aspect-[4/3]"
@@ -29,7 +29,7 @@ export const ContentWithImageBlock: React.FC<ContentBlockProps> = (props) => {
         </div>
       )}
       {/* Content */}
-      <div className={cn('w-full h-full lg:w-1/2 prose flex flex-col lg:mt-14', 'pr-14')}>
+      <div className="w-full h-full lg:w-1/2 prose flex flex-col lg:mt-14">
         {/* Rich Text Section */}
         <div>
           {content && (
