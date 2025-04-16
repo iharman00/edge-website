@@ -12,7 +12,7 @@ const ImageGalleryBlock = ({ images }: ImageGalleryProps) => {
   if (!images || images.length === 0) return null
 
   return (
-    <Carousel>
+    <Carousel className="-my-10">
       <CarouselContent>
         {images.map((image) => (
           <CarouselItem key={image.id} className="flex justify-center lg:basis-1/2">

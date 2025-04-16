@@ -21,6 +21,7 @@ import { EventsBlock } from '@/blocks/Events/config'
 import { ContentWithSteps } from '@/blocks/ContentWithSteps/config'
 import { Content } from '@/blocks/Content/config'
 import { ImageGallery } from '@/blocks/ImageGallery/config'
+import { CallToAction } from '@/blocks/CallToAction/config'
 
 export const Pages: CollectionConfig<'pages'> = {
   slug: 'pages',
@@ -91,6 +92,7 @@ export const Pages: CollectionConfig<'pages'> = {
                 ImageGallery,
                 FormBlock,
                 EventsBlock,
+                CallToAction,
               ],
               required: true,
               admin: {

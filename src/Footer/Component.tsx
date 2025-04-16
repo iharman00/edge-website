@@ -15,11 +15,11 @@ export async function Footer() {
 
   return (
     <footer className="bg-secondary text-secondary-foreground pt-20 pb-28">
-      <ResponsiveContainer className="flex items-start gap-16 ">
-        <Link className="flex items-center" href="/">
+      <ResponsiveContainer className="flex flex-col items-center md:flex-row gap-16 ">
+        <Link href="/">
           <Logo className="w-[20rem]" />
         </Link>
-        <nav className="flex flex-wrap gap-10 w-max">
+        <nav className="flex flex-wrap flex-col md:flex-row gap-10 w-max">
           {navItems.map(({ link }, i) => {
             return (
               <CMSLink
