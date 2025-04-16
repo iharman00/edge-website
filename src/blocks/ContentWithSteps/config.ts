@@ -1,3 +1,4 @@
+import { link } from '@/fields/link'
 import {
   FixedToolbarFeature,
   HeadingFeature,
@@ -56,6 +57,19 @@ export const ContentWithSteps: Block = {
           }),
           required: true,
         },
+        {
+          name: 'enableLink',
+          type: 'checkbox',
+        },
+        link({
+          overrides: {
+            admin: {
+              condition: (_data, siblingData) => {
+                return Boolean(siblingData?.enableLink)
+              },
+            },
+          },
+        }),
         {
           name: 'enableDownloadableResource',
           type: 'checkbox',

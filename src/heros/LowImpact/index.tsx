@@ -7,7 +7,7 @@ import ResponsiveContainer from '@/components/ui/ResponsiveContainer'
 
 export const LowImpactHero: React.FC<Page['hero']> = ({ content }) => {
   return (
-    <div className="bg-background text-foreground pt-8 pb-16">
+    <div className="bg-background text-foreground pt-8 pb-10">
       <ResponsiveContainer className="max-w-[85rem]">
         <div className="max-w-[40rem]">
           {content && (

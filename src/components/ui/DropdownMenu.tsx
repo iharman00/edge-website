@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, createContext, useContext, Dispatch } from 'react'
-import { Play } from 'lucide-react'
+import { ChartLine, Play } from 'lucide-react'
 import { Button, ButtonProps } from './button'
 import { cn } from '@/utilities/ui'
 
@@ -20,27 +20,14 @@ const useDropdown = () => {
   return context
 }
 
-const DropdownMenu = ({
-  className,
-  children,
-  onMouseEnter,
-  onMouseLeave,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
+const DropdownMenu = ({ className, children, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
   const [isOpen, setIsOpen] = useState(false)
 
   return (
     <DropdownContext.Provider value={{ isOpen, setIsOpen }}>
       <div
-        className={cn('relative', className)}
-        onMouseEnter={(evt) => {
-          setIsOpen(true)
-          onMouseEnter?.(evt)
-        }}
-        onMouseLeave={(evt) => {
-          setIsOpen(false)
-          onMouseLeave?.(evt)
-        }}
+        className={cn('relative inline-block', className)}
+        onMouseEnter={() => setIsOpen(true)}
         {...props}
       >
         {children}
@@ -85,18 +72,29 @@ const DropdownTrigger = ({
   )
 }
 
-const DropdownContent = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => {
-  const { isOpen } = useDropdown()
+const DropdownContent = ({
+  className,
+  onMouseLeave,
+  children,
+  ...props
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  const { isOpen, setIsOpen } = useDropdown()
 
   return (
     <div
       className={cn(
-        'absolute left-0 mt-0.5 w-max bg-white text-black shadow-lg rounded-md px-4 py-2 transform transition-all duration-200 ease-in-out',
+        'absolute left-0 mt-0.5 w-max h-max bg-white text-black shadow-lg rounded-md px-4 py-2 transform transition-all duration-200 ease-in-out',
         isOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none',
         className,
       )}
+      onMouseLeave={(evt) => {
+        setIsOpen(false)
+        onMouseLeave?.(evt)
+      }}
       {...props}
-    />
+    >
+      {children}
+    </div>
   )
 }
 

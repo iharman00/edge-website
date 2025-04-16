@@ -364,6 +364,9 @@ export interface ContentBlock {
            */
           appearance?: ('default' | 'secondary') | null;
         };
+        enableDownload?: boolean | null;
+        resourceLabel?: string | null;
+        downloadableResource?: (string | null) | Media;
         id?: string | null;
       }[]
     | null;
@@ -454,6 +457,21 @@ export interface ContentWithStepsBlock {
         version: number;
       };
       [k: string]: unknown;
+    };
+    enableLink?: boolean | null;
+    link?: {
+      type?: ('reference' | 'custom') | null;
+      newTab?: boolean | null;
+      reference?: {
+        relationTo: 'pages';
+        value: string | Page;
+      } | null;
+      url?: string | null;
+      label: string;
+      /**
+       * Choose how the link should be rendered.
+       */
+      appearance?: ('default' | 'secondary') | null;
     };
     enableDownloadableResource: boolean;
     resourceLabel?: string | null;
@@ -1178,6 +1196,9 @@ export interface ContentBlockSelect<T extends boolean = true> {
               label?: T;
               appearance?: T;
             };
+        enableDownload?: T;
+        resourceLabel?: T;
+        downloadableResource?: T;
         id?: T;
       };
   id?: T;
@@ -1222,6 +1243,17 @@ export interface ContentWithStepsBlockSelect<T extends boolean = true> {
     | {
         stepTitle?: T;
         stepDescription?: T;
+        enableLink?: T;
+        link?:
+          | T
+          | {
+              type?: T;
+              newTab?: T;
+              reference?: T;
+              url?: T;
+              label?: T;
+              appearance?: T;
+            };
         enableDownloadableResource?: T;
         resourceLabel?: T;
         downloadableResource?: T;

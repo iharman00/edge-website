@@ -61,6 +61,32 @@ const columnFields: Field[] = [
       },
     },
   }),
+  {
+    name: 'enableDownload',
+    type: 'checkbox',
+  },
+  {
+    name: 'resourceLabel',
+    type: 'text',
+    label: 'Attached Resource Button Label',
+    required: false,
+    admin: {
+      condition: (_data, siblingData) => {
+        return Boolean(siblingData?.enableDownload)
+      },
+    },
+  },
+  {
+    name: 'downloadableResource',
+    type: 'upload',
+    relationTo: 'media',
+    required: false,
+    admin: {
+      condition: (_data, siblingData) => {
+        return Boolean(siblingData?.enableDownload)
+      },
+    },
+  },
 ]
 
 export const Content: Block = {

@@ -49,7 +49,7 @@ const EventsBlockClient = ({
       )}
 
       {/* No Events */}
-      {pages.length === 0 && (
+      {pages[0].docs.length === 0 && (
         <p className="text-center text-xl text-muted-foreground my-8">No events found.</p>
       )}
 

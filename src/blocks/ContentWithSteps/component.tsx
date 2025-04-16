@@ -12,6 +12,7 @@ import { ContentWithStepsBlock as ContentBlockProps } from '@/payload-types'
 import RichText from '@/components/RichText'
 import { Media } from '@/components/Media'
 import Link from 'next/link'
+import { CMSLink } from '@/components/Link'
 
 const ContentWithStepsBlock = ({ steps, content, image }: ContentBlockProps) => {
   return (
@@ -27,6 +28,7 @@ const ContentWithStepsBlock = ({ steps, content, image }: ContentBlockProps) => 
               <AccordionContent>
                 <div className="space-y-4">
                   <RichText data={step.stepDescription} enableGutter={false} />
+                  {step.enableLink && <CMSLink {...step.link} />}
                   {step.enableDownloadableResource &&
                     step.downloadableResource &&
                     typeof step.downloadableResource === 'object' &&
